@@ -103,9 +103,9 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code):
 
     for sigun_name in sigun_list:
         while True:
-            driver = webdriver.Chrome(options=chrome_options)
-            driver.get("https://www.opinet.co.kr/searRgSelect.do")
             try:
+                driver = webdriver.Chrome(options=chrome_options)
+                driver.get("https://www.opinet.co.kr/searRgSelect.do")
                 start_time = time.time()
                 # 특정 요소가 나타날 때까지 최대 10초 대기
                 WebDriverWait(driver, 60).until(
