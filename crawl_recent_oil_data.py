@@ -217,10 +217,9 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code):
     for sigun_name in sigun_list:
         driver = webdriver.Chrome(options=chrome_options)
         driver.get("https://www.opinet.co.kr/searRgSelect.do")
-        time.sleep(15)
         try:
             # 특정 요소가 나타날 때까지 최대 10초 대기
-            WebDriverWait(driver, 10).until(
+            WebDriverWait(driver, 30).until(
                 EC.presence_of_element_located((By.XPATH, '//*[@id="SIDO_NM0"]'))
             )
             print(f"{sido_name} 웹페이지 로드 완료!")
@@ -239,7 +238,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code):
             EC.presence_of_element_located((By.XPATH, '//*[@id="SIGUNGU_NM0"]'))
         )
         Select(sigun).select_by_visible_text(sigun_name) # 시군 네임 입력
-        time.sleep(15)
+        time.sleep(20)
         excel_download_button = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.XPATH, '//*[@id="templ_list0"]/div[7]/div/a'))
         )
