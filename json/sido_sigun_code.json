@@ -1,0 +1,1022 @@
+{
+    "SIDO": [
+        {
+            "AREA_CD": "01",
+            "AREA_NM": "서울",
+            "SIGUN": [
+                {
+                    "AREA_CD": "0101",
+                    "AREA_NM": "종로구"
+                },
+                {
+                    "AREA_CD": "0102",
+                    "AREA_NM": "중구"
+                },
+                {
+                    "AREA_CD": "0103",
+                    "AREA_NM": "동대문구"
+                },
+                {
+                    "AREA_CD": "0104",
+                    "AREA_NM": "성동구"
+                },
+                {
+                    "AREA_CD": "0105",
+                    "AREA_NM": "성북구"
+                },
+                {
+                    "AREA_CD": "0106",
+                    "AREA_NM": "도봉구"
+                },
+                {
+                    "AREA_CD": "0107",
+                    "AREA_NM": "서대문구"
+                },
+                {
+                    "AREA_CD": "0108",
+                    "AREA_NM": "은평구"
+                },
+                {
+                    "AREA_CD": "0109",
+                    "AREA_NM": "마포구"
+                },
+                {
+                    "AREA_CD": "0110",
+                    "AREA_NM": "용산구"
+                },
+                {
+                    "AREA_CD": "0111",
+                    "AREA_NM": "영등포구"
+                },
+                {
+                    "AREA_CD": "0112",
+                    "AREA_NM": "동작구"
+                },
+                {
+                    "AREA_CD": "0113",
+                    "AREA_NM": "강남구"
+                },
+                {
+                    "AREA_CD": "0114",
+                    "AREA_NM": "강동구"
+                },
+                {
+                    "AREA_CD": "0115",
+                    "AREA_NM": "강서구"
+                },
+                {
+                    "AREA_CD": "0116",
+                    "AREA_NM": "구로구"
+                },
+                {
+                    "AREA_CD": "0117",
+                    "AREA_NM": "관악구"
+                },
+                {
+                    "AREA_CD": "0118",
+                    "AREA_NM": "노원구"
+                },
+                {
+                    "AREA_CD": "0119",
+                    "AREA_NM": "양천구"
+                },
+                {
+                    "AREA_CD": "0120",
+                    "AREA_NM": "중랑구"
+                },
+                {
+                    "AREA_CD": "0121",
+                    "AREA_NM": "서초구"
+                },
+                {
+                    "AREA_CD": "0122",
+                    "AREA_NM": "송파구"
+                },
+                {
+                    "AREA_CD": "0123",
+                    "AREA_NM": "광진구"
+                },
+                {
+                    "AREA_CD": "0124",
+                    "AREA_NM": "강북구"
+                },
+                {
+                    "AREA_CD": "0125",
+                    "AREA_NM": "금천구"
+                }
+            ]
+        },
+        {
+            "AREA_CD": "02",
+            "AREA_NM": "경기",
+            "SIGUN": [
+                {
+                    "AREA_CD": "0201",
+                    "AREA_NM": "수원시"
+                },
+                {
+                    "AREA_CD": "0202",
+                    "AREA_NM": "성남시"
+                },
+                {
+                    "AREA_CD": "0203",
+                    "AREA_NM": "의정부시"
+                },
+                {
+                    "AREA_CD": "0204",
+                    "AREA_NM": "안양시"
+                },
+                {
+                    "AREA_CD": "0205",
+                    "AREA_NM": "부천시"
+                },
+                {
+                    "AREA_CD": "0206",
+                    "AREA_NM": "동두천시"
+                },
+                {
+                    "AREA_CD": "0207",
+                    "AREA_NM": "광명시"
+                },
+                {
+                    "AREA_CD": "0208",
+                    "AREA_NM": "이천시"
+                },
+                {
+                    "AREA_CD": "0209",
+                    "AREA_NM": "평택시"
+                },
+                {
+                    "AREA_CD": "0210",
+                    "AREA_NM": "구리시"
+                },
+                {
+                    "AREA_CD": "0211",
+                    "AREA_NM": "과천시"
+                },
+                {
+                    "AREA_CD": "0212",
+                    "AREA_NM": "안산시"
+                },
+                {
+                    "AREA_CD": "0213",
+                    "AREA_NM": "오산시"
+                },
+                {
+                    "AREA_CD": "0214",
+                    "AREA_NM": "의왕시"
+                },
+                {
+                    "AREA_CD": "0215",
+                    "AREA_NM": "군포시"
+                },
+                {
+                    "AREA_CD": "0216",
+                    "AREA_NM": "시흥시"
+                },
+                {
+                    "AREA_CD": "0217",
+                    "AREA_NM": "남양주시"
+                },
+                {
+                    "AREA_CD": "0218",
+                    "AREA_NM": "하남시"
+                },
+                {
+                    "AREA_CD": "0219",
+                    "AREA_NM": "고양시"
+                },
+                {
+                    "AREA_CD": "0220",
+                    "AREA_NM": "용인시"
+                },
+                {
+                    "AREA_CD": "0221",
+                    "AREA_NM": "양주시"
+                },
+                {
+                    "AREA_CD": "0222",
+                    "AREA_NM": "여주시"
+                },
+                {
+                    "AREA_CD": "0224",
+                    "AREA_NM": "화성시"
+                },
+                {
+                    "AREA_CD": "0226",
+                    "AREA_NM": "파주시"
+                },
+                {
+                    "AREA_CD": "0228",
+                    "AREA_NM": "광주시"
+                },
+                {
+                    "AREA_CD": "0229",
+                    "AREA_NM": "연천군"
+                },
+                {
+                    "AREA_CD": "0230",
+                    "AREA_NM": "포천시"
+                },
+                {
+                    "AREA_CD": "0231",
+                    "AREA_NM": "가평군"
+                },
+                {
+                    "AREA_CD": "0232",
+                    "AREA_NM": "양평군"
+                },
+                {
+                    "AREA_CD": "0235",
+                    "AREA_NM": "안성시"
+                },
+                {
+                    "AREA_CD": "0236",
+                    "AREA_NM": "김포시"
+                }
+            ]
+        },
+        {
+            "AREA_CD": "03",
+            "AREA_NM": "강원",
+            "SIGUN": [
+                {
+                    "AREA_CD": "0301",
+                    "AREA_NM": "춘천시"
+                },
+                {
+                    "AREA_CD": "0302",
+                    "AREA_NM": "원주시"
+                },
+                {
+                    "AREA_CD": "0303",
+                    "AREA_NM": "강릉시"
+                },
+                {
+                    "AREA_CD": "0304",
+                    "AREA_NM": "속초시"
+                },
+                {
+                    "AREA_CD": "0305",
+                    "AREA_NM": "동해시"
+                },
+                {
+                    "AREA_CD": "0306",
+                    "AREA_NM": "태백시"
+                },
+                {
+                    "AREA_CD": "0307",
+                    "AREA_NM": "삼척시"
+                },
+                {
+                    "AREA_CD": "0322",
+                    "AREA_NM": "홍천군"
+                },
+                {
+                    "AREA_CD": "0323",
+                    "AREA_NM": "횡성군"
+                },
+                {
+                    "AREA_CD": "0325",
+                    "AREA_NM": "영월군"
+                },
+                {
+                    "AREA_CD": "0326",
+                    "AREA_NM": "평창군"
+                },
+                {
+                    "AREA_CD": "0327",
+                    "AREA_NM": "정선군"
+                },
+                {
+                    "AREA_CD": "0328",
+                    "AREA_NM": "철원군"
+                },
+                {
+                    "AREA_CD": "0329",
+                    "AREA_NM": "화천군"
+                },
+                {
+                    "AREA_CD": "0330",
+                    "AREA_NM": "양구군"
+                },
+                {
+                    "AREA_CD": "0331",
+                    "AREA_NM": "인제군"
+                },
+                {
+                    "AREA_CD": "0332",
+                    "AREA_NM": "고성군"
+                },
+                {
+                    "AREA_CD": "0333",
+                    "AREA_NM": "양양군"
+                }
+            ]
+        },
+        {
+            "AREA_CD": "04",
+            "AREA_NM": "충북",
+            "SIGUN": [
+                {
+                    "AREA_CD": "0401",
+                    "AREA_NM": "청주시"
+                },
+                {
+                    "AREA_CD": "0402",
+                    "AREA_NM": "충주시"
+                },
+                {
+                    "AREA_CD": "0403",
+                    "AREA_NM": "제천시"
+                },
+                {
+                    "AREA_CD": "0422",
+                    "AREA_NM": "보은군"
+                },
+                {
+                    "AREA_CD": "0423",
+                    "AREA_NM": "옥천군"
+                },
+                {
+                    "AREA_CD": "0424",
+                    "AREA_NM": "영동군"
+                },
+                {
+                    "AREA_CD": "0425",
+                    "AREA_NM": "진천군"
+                },
+                {
+                    "AREA_CD": "0426",
+                    "AREA_NM": "괴산군"
+                },
+                {
+                    "AREA_CD": "0427",
+                    "AREA_NM": "음성군"
+                },
+                {
+                    "AREA_CD": "0430",
+                    "AREA_NM": "단양군"
+                },
+                {
+                    "AREA_CD": "0431",
+                    "AREA_NM": "증평군"
+                }
+            ]
+        },
+        {
+            "AREA_CD": "05",
+            "AREA_NM": "충남",
+            "SIGUN": [
+                {
+                    "AREA_CD": "0502",
+                    "AREA_NM": "천안시"
+                },
+                {
+                    "AREA_CD": "0503",
+                    "AREA_NM": "공주시"
+                },
+                {
+                    "AREA_CD": "0504",
+                    "AREA_NM": "아산시"
+                },
+                {
+                    "AREA_CD": "0505",
+                    "AREA_NM": "보령시"
+                },
+                {
+                    "AREA_CD": "0506",
+                    "AREA_NM": "서산시"
+                },
+                {
+                    "AREA_CD": "0507",
+                    "AREA_NM": "논산시"
+                },
+                {
+                    "AREA_CD": "0508",
+                    "AREA_NM": "계룡시"
+                },
+                {
+                    "AREA_CD": "0521",
+                    "AREA_NM": "금산군"
+                },
+                {
+                    "AREA_CD": "0526",
+                    "AREA_NM": "부여군"
+                },
+                {
+                    "AREA_CD": "0527",
+                    "AREA_NM": "서천군"
+                },
+                {
+                    "AREA_CD": "0529",
+                    "AREA_NM": "청양군"
+                },
+                {
+                    "AREA_CD": "0530",
+                    "AREA_NM": "홍성군"
+                },
+                {
+                    "AREA_CD": "0531",
+                    "AREA_NM": "예산군"
+                },
+                {
+                    "AREA_CD": "0533",
+                    "AREA_NM": "당진시"
+                },
+                {
+                    "AREA_CD": "0537",
+                    "AREA_NM": "태안군"
+                }
+            ]
+        },
+        {
+            "AREA_CD": "06",
+            "AREA_NM": "전북",
+            "SIGUN": [
+                {
+                    "AREA_CD": "0601",
+                    "AREA_NM": "전주시"
+                },
+                {
+                    "AREA_CD": "0602",
+                    "AREA_NM": "군산시"
+                },
+                {
+                    "AREA_CD": "0603",
+                    "AREA_NM": "익산시"
+                },
+                {
+                    "AREA_CD": "0604",
+                    "AREA_NM": "남원시"
+                },
+                {
+                    "AREA_CD": "0605",
+                    "AREA_NM": "정읍시"
+                },
+                {
+                    "AREA_CD": "0606",
+                    "AREA_NM": "김제시"
+                },
+                {
+                    "AREA_CD": "0621",
+                    "AREA_NM": "완주군"
+                },
+                {
+                    "AREA_CD": "0622",
+                    "AREA_NM": "진안군"
+                },
+                {
+                    "AREA_CD": "0623",
+                    "AREA_NM": "무주군"
+                },
+                {
+                    "AREA_CD": "0624",
+                    "AREA_NM": "장수군"
+                },
+                {
+                    "AREA_CD": "0625",
+                    "AREA_NM": "임실군"
+                },
+                {
+                    "AREA_CD": "0627",
+                    "AREA_NM": "순창군"
+                },
+                {
+                    "AREA_CD": "0629",
+                    "AREA_NM": "고창군"
+                },
+                {
+                    "AREA_CD": "0630",
+                    "AREA_NM": "부안군"
+                }
+            ]
+        },
+        {
+            "AREA_CD": "07",
+            "AREA_NM": "전남",
+            "SIGUN": [
+                {
+                    "AREA_CD": "0702",
+                    "AREA_NM": "목포시"
+                },
+                {
+                    "AREA_CD": "0703",
+                    "AREA_NM": "여수시"
+                },
+                {
+                    "AREA_CD": "0704",
+                    "AREA_NM": "순천시"
+                },
+                {
+                    "AREA_CD": "0705",
+                    "AREA_NM": "나주시"
+                },
+                {
+                    "AREA_CD": "0707",
+                    "AREA_NM": "광양시"
+                },
+                {
+                    "AREA_CD": "0722",
+                    "AREA_NM": "담양군"
+                },
+                {
+                    "AREA_CD": "0723",
+                    "AREA_NM": "곡성군"
+                },
+                {
+                    "AREA_CD": "0724",
+                    "AREA_NM": "구례군"
+                },
+                {
+                    "AREA_CD": "0728",
+                    "AREA_NM": "고흥군"
+                },
+                {
+                    "AREA_CD": "0729",
+                    "AREA_NM": "보성군"
+                },
+                {
+                    "AREA_CD": "0730",
+                    "AREA_NM": "화순군"
+                },
+                {
+                    "AREA_CD": "0731",
+                    "AREA_NM": "장흥군"
+                },
+                {
+                    "AREA_CD": "0732",
+                    "AREA_NM": "강진군"
+                },
+                {
+                    "AREA_CD": "0733",
+                    "AREA_NM": "해남군"
+                },
+                {
+                    "AREA_CD": "0734",
+                    "AREA_NM": "영암군"
+                },
+                {
+                    "AREA_CD": "0735",
+                    "AREA_NM": "무안군"
+                },
+                {
+                    "AREA_CD": "0737",
+                    "AREA_NM": "함평군"
+                },
+                {
+                    "AREA_CD": "0738",
+                    "AREA_NM": "영광군"
+                },
+                {
+                    "AREA_CD": "0739",
+                    "AREA_NM": "장성군"
+                },
+                {
+                    "AREA_CD": "0740",
+                    "AREA_NM": "완도군"
+                },
+                {
+                    "AREA_CD": "0741",
+                    "AREA_NM": "진도군"
+                },
+                {
+                    "AREA_CD": "0742",
+                    "AREA_NM": "신안군"
+                }
+            ]
+        },
+        {
+            "AREA_CD": "08",
+            "AREA_NM": "경북",
+            "SIGUN": [
+                {
+                    "AREA_CD": "0801",
+                    "AREA_NM": "포항시"
+                },
+                {
+                    "AREA_CD": "0802",
+                    "AREA_NM": "경주시"
+                },
+                {
+                    "AREA_CD": "0803",
+                    "AREA_NM": "김천시"
+                },
+                {
+                    "AREA_CD": "0804",
+                    "AREA_NM": "영주시"
+                },
+                {
+                    "AREA_CD": "0805",
+                    "AREA_NM": "영천시"
+                },
+                {
+                    "AREA_CD": "0806",
+                    "AREA_NM": "안동시"
+                },
+                {
+                    "AREA_CD": "0807",
+                    "AREA_NM": "구미시"
+                },
+                {
+                    "AREA_CD": "0808",
+                    "AREA_NM": "문경시"
+                },
+                {
+                    "AREA_CD": "0809",
+                    "AREA_NM": "상주시"
+                },
+                {
+                    "AREA_CD": "0810",
+                    "AREA_NM": "경산시"
+                },
+                {
+                    "AREA_CD": "0823",
+                    "AREA_NM": "의성군"
+                },
+                {
+                    "AREA_CD": "0825",
+                    "AREA_NM": "청송군"
+                },
+                {
+                    "AREA_CD": "0826",
+                    "AREA_NM": "영양군"
+                },
+                {
+                    "AREA_CD": "0827",
+                    "AREA_NM": "영덕군"
+                },
+                {
+                    "AREA_CD": "0832",
+                    "AREA_NM": "청도군"
+                },
+                {
+                    "AREA_CD": "0833",
+                    "AREA_NM": "고령군"
+                },
+                {
+                    "AREA_CD": "0834",
+                    "AREA_NM": "성주군"
+                },
+                {
+                    "AREA_CD": "0835",
+                    "AREA_NM": "칠곡군"
+                },
+                {
+                    "AREA_CD": "0840",
+                    "AREA_NM": "예천군"
+                },
+                {
+                    "AREA_CD": "0842",
+                    "AREA_NM": "봉화군"
+                },
+                {
+                    "AREA_CD": "0843",
+                    "AREA_NM": "울진군"
+                },
+                {
+                    "AREA_CD": "0844",
+                    "AREA_NM": "울릉군"
+                }
+            ]
+        },
+        {
+            "AREA_CD": "09",
+            "AREA_NM": "경남",
+            "SIGUN": [
+                {
+                    "AREA_CD": "0902",
+                    "AREA_NM": "창원시"
+                },
+                {
+                    "AREA_CD": "0904",
+                    "AREA_NM": "진주시"
+                },
+                {
+                    "AREA_CD": "0906",
+                    "AREA_NM": "통영시"
+                },
+                {
+                    "AREA_CD": "0907",
+                    "AREA_NM": "사천시"
+                },
+                {
+                    "AREA_CD": "0908",
+                    "AREA_NM": "김해시"
+                },
+                {
+                    "AREA_CD": "0909",
+                    "AREA_NM": "밀양시"
+                },
+                {
+                    "AREA_CD": "0910",
+                    "AREA_NM": "거제시"
+                },
+                {
+                    "AREA_CD": "0911",
+                    "AREA_NM": "양산시"
+                },
+                {
+                    "AREA_CD": "0922",
+                    "AREA_NM": "의령군"
+                },
+                {
+                    "AREA_CD": "0923",
+                    "AREA_NM": "함안군"
+                },
+                {
+                    "AREA_CD": "0924",
+                    "AREA_NM": "창녕군"
+                },
+                {
+                    "AREA_CD": "0932",
+                    "AREA_NM": "고성군"
+                },
+                {
+                    "AREA_CD": "0934",
+                    "AREA_NM": "남해군"
+                },
+                {
+                    "AREA_CD": "0935",
+                    "AREA_NM": "하동군"
+                },
+                {
+                    "AREA_CD": "0936",
+                    "AREA_NM": "산청군"
+                },
+                {
+                    "AREA_CD": "0937",
+                    "AREA_NM": "함양군"
+                },
+                {
+                    "AREA_CD": "0938",
+                    "AREA_NM": "거창군"
+                },
+                {
+                    "AREA_CD": "0939",
+                    "AREA_NM": "합천군"
+                }
+            ]
+        },
+        {
+            "AREA_CD": "10",
+            "AREA_NM": "부산",
+            "SIGUN": [
+                {
+                    "AREA_CD": "1001",
+                    "AREA_NM": "중구"
+                },
+                {
+                    "AREA_CD": "1002",
+                    "AREA_NM": "서구"
+                },
+                {
+                    "AREA_CD": "1003",
+                    "AREA_NM": "동구"
+                },
+                {
+                    "AREA_CD": "1004",
+                    "AREA_NM": "영도구"
+                },
+                {
+                    "AREA_CD": "1005",
+                    "AREA_NM": "부산진구"
+                },
+                {
+                    "AREA_CD": "1006",
+                    "AREA_NM": "동래구"
+                },
+                {
+                    "AREA_CD": "1007",
+                    "AREA_NM": "남구"
+                },
+                {
+                    "AREA_CD": "1008",
+                    "AREA_NM": "북구"
+                },
+                {
+                    "AREA_CD": "1009",
+                    "AREA_NM": "해운대구"
+                },
+                {
+                    "AREA_CD": "1010",
+                    "AREA_NM": "사하구"
+                },
+                {
+                    "AREA_CD": "1011",
+                    "AREA_NM": "강서구"
+                },
+                {
+                    "AREA_CD": "1012",
+                    "AREA_NM": "금정구"
+                },
+                {
+                    "AREA_CD": "1013",
+                    "AREA_NM": "연제구"
+                },
+                {
+                    "AREA_CD": "1014",
+                    "AREA_NM": "수영구"
+                },
+                {
+                    "AREA_CD": "1015",
+                    "AREA_NM": "사상구"
+                },
+                {
+                    "AREA_CD": "1031",
+                    "AREA_NM": "기장군"
+                }
+            ]
+        },
+        {
+            "AREA_CD": "11",
+            "AREA_NM": "제주",
+            "SIGUN": [
+                {
+                    "AREA_CD": "1101",
+                    "AREA_NM": "제주시"
+                },
+                {
+                    "AREA_CD": "1102",
+                    "AREA_NM": "서귀포시"
+                }
+            ]
+        },
+        {
+            "AREA_CD": "14",
+            "AREA_NM": "대구",
+            "SIGUN": [
+                {
+                    "AREA_CD": "1401",
+                    "AREA_NM": "중구"
+                },
+                {
+                    "AREA_CD": "1402",
+                    "AREA_NM": "동구"
+                },
+                {
+                    "AREA_CD": "1403",
+                    "AREA_NM": "서구"
+                },
+                {
+                    "AREA_CD": "1404",
+                    "AREA_NM": "남구"
+                },
+                {
+                    "AREA_CD": "1405",
+                    "AREA_NM": "북구"
+                },
+                {
+                    "AREA_CD": "1406",
+                    "AREA_NM": "수성구"
+                },
+                {
+                    "AREA_CD": "1407",
+                    "AREA_NM": "달서구"
+                },
+                {
+                    "AREA_CD": "1431",
+                    "AREA_NM": "달성군"
+                },
+                {
+                    "AREA_CD": "1432",
+                    "AREA_NM": "군위군"
+                }
+            ]
+        },
+        {
+            "AREA_CD": "15",
+            "AREA_NM": "인천",
+            "SIGUN": [
+                {
+                    "AREA_CD": "1501",
+                    "AREA_NM": "중구"
+                },
+                {
+                    "AREA_CD": "1502",
+                    "AREA_NM": "동구"
+                },
+                {
+                    "AREA_CD": "1503",
+                    "AREA_NM": "미추홀구"
+                },
+                {
+                    "AREA_CD": "1504",
+                    "AREA_NM": "부평구"
+                },
+                {
+                    "AREA_CD": "1505",
+                    "AREA_NM": "서구"
+                },
+                {
+                    "AREA_CD": "1506",
+                    "AREA_NM": "남동구"
+                },
+                {
+                    "AREA_CD": "1507",
+                    "AREA_NM": "연수구"
+                },
+                {
+                    "AREA_CD": "1508",
+                    "AREA_NM": "계양구"
+                },
+                {
+                    "AREA_CD": "1531",
+                    "AREA_NM": "강화군"
+                },
+                {
+                    "AREA_CD": "1532",
+                    "AREA_NM": "옹진군"
+                }
+            ]
+        },
+        {
+            "AREA_CD": "16",
+            "AREA_NM": "광주",
+            "SIGUN": [
+                {
+                    "AREA_CD": "1601",
+                    "AREA_NM": "동구"
+                },
+                {
+                    "AREA_CD": "1602",
+                    "AREA_NM": "서구"
+                },
+                {
+                    "AREA_CD": "1603",
+                    "AREA_NM": "북구"
+                },
+                {
+                    "AREA_CD": "1604",
+                    "AREA_NM": "광산구"
+                },
+                {
+                    "AREA_CD": "1605",
+                    "AREA_NM": "남구"
+                }
+            ]
+        },
+        {
+            "AREA_CD": "17",
+            "AREA_NM": "대전",
+            "SIGUN": [
+                {
+                    "AREA_CD": "1701",
+                    "AREA_NM": "동구"
+                },
+                {
+                    "AREA_CD": "1702",
+                    "AREA_NM": "중구"
+                },
+                {
+                    "AREA_CD": "1703",
+                    "AREA_NM": "서구"
+                },
+                {
+                    "AREA_CD": "1704",
+                    "AREA_NM": "유성구"
+                },
+                {
+                    "AREA_CD": "1705",
+                    "AREA_NM": "대덕구"
+                }
+            ]
+        },
+        {
+            "AREA_CD": "18",
+            "AREA_NM": "울산",
+            "SIGUN": [
+                {
+                    "AREA_CD": "1801",
+                    "AREA_NM": "중구"
+                },
+                {
+                    "AREA_CD": "1802",
+                    "AREA_NM": "남구"
+                },
+                {
+                    "AREA_CD": "1803",
+                    "AREA_NM": "동구"
+                },
+                {
+                    "AREA_CD": "1804",
+                    "AREA_NM": "북구"
+                },
+                {
+                    "AREA_CD": "1831",
+                    "AREA_NM": "울주군"
+                }
+            ]
+        },
+        {
+            "AREA_CD": "19",
+            "AREA_NM": "세종",
+            "SIGUN": [
+                {
+                    "AREA_CD": "1901",
+                    "AREA_NM": "세종시"
+                }
+            ]
+        }
+    ]
+}
