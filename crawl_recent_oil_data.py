@@ -157,7 +157,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code):
         end_time = time.time()
         elapsed_time = end_time - start_time
         print(f"{sido_name} 시군란 입력완료 걸린 시간 : {elapsed_time:.1f}초")
-        time.sleep(0)
+        time.sleep(1)
         # 엑셀 다운로드
         excel_download_button = WebDriverWait(driver, 60).until(
             EC.presence_of_element_located((By.XPATH, '//*[@id="templ_list0"]/div[7]/div/a'))
