@@ -245,9 +245,6 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code):
             else:
                 print(f'{sido_name} 시군네임 입력중')
                 time.sleep(1)
-        # 파일이 없거나/삭제될때 까지 대기
-        while os.path.exists(excel_file_path):
-            time.sleep(0.1)
         excel_download_button = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.XPATH, '//*[@id="templ_list0"]/div[7]/div/a'))
         )
@@ -262,6 +259,10 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code):
         sido_oil_data_list.extend(data_frame_list)
         # 엑셀 파일 제거
         os.remove(excel_file_path)
+        # 파일이 없거나/삭제될때 까지 대기
+        while os.path.exists(excel_file_path):
+            time.sleep(0.1)
+        print('엑셀파일 제거완료')
         # 엑셀 파일 이름 변경
         # new_name = f'{sigun_name}_data.xls'
         # new_path = os.path.join(download_dir, new_name)
