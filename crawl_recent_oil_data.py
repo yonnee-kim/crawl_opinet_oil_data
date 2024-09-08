@@ -102,21 +102,23 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code):
     print(f'{sido_name} 시군리스트 : {sigun_list}')
 
     for sigun_name in sigun_list:
-        driver = webdriver.Chrome(options=chrome_options)
-        driver.get("https://www.opinet.co.kr/searRgSelect.do")
-        try:
-            start_time = time.time()
-            # 특정 요소가 나타날 때까지 최대 10초 대기
-            WebDriverWait(driver, 60).until(
-                EC.presence_of_element_located((By.XPATH, '//*[@id="SIDO_NM0"]'))
-            )
-            end_time = time.time()
-            elapsed_time = end_time - start_time
-            print(f"{sido_name} 웹페이지 로드 완료! 걸린 시간 : {elapsed_time:.1f}초")
-        except Exception as e:
-            print(f"{sido_name} 웹페이지 로드 실패:", e)
-            driver.quit()  # 드라이버 종료
-            sys.exit(1)  # 프로그램 종료
+        while True:
+            driver = webdriver.Chrome(options=chrome_options)
+            driver.get("https://www.opinet.co.kr/searRgSelect.do")
+            try:
+                start_time = time.time()
+                # 특정 요소가 나타날 때까지 최대 10초 대기
+                WebDriverWait(driver, 60).until(
+                    EC.presence_of_element_located((By.XPATH, '//*[@id="SIDO_NM0"]'))
+                )
+                end_time = time.time()
+                elapsed_time = end_time - start_time
+                print(f"{sido_name} 웹페이지 로드 완료! 걸린 시간 : {elapsed_time:.1f}초")
+                break
+            except Exception as e:
+                print(f"{sido_name} 웹페이지 로드 실패:", e)
+                driver.quit()  # 드라이버 종료
+                
         # 시도란 입력
         sido = WebDriverWait(driver, 60).until(
             EC.presence_of_element_located((By.XPATH, '//*[@id="SIDO_NM0"]'))
@@ -136,7 +138,6 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code):
         end_time = time.time()
         elapsed_time = end_time - start_time
         print(f"{sido_name} 시도란 입력완료 걸린 시간 : {elapsed_time:.1f}초")
-        time.sleep(2)
         # 시군란 입력       
         sigun = WebDriverWait(driver, 60).until(
             EC.presence_of_element_located((By.XPATH, '//*[@id="SIGUNGU_NM0"]'))
@@ -147,7 +148,6 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code):
             try:
                 sigun = driver.find_element(By.XPATH, '//*[@id="SIGUNGU_NM0"]')
                 selected_option = Select(sigun).first_selected_option
-                print(selected_option.text)
                 if selected_option.text == sigun_name:
                     break
                 else:
@@ -172,7 +172,6 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code):
             excel_file_name = os.listdir(download_dir)[0]
             extension = excel_file_name.split('.')[1]
             if extension != 'xls' and extension != 'xlsx':
-                
                 time.sleep(0.1)
             else :
                 break
@@ -192,10 +191,6 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code):
             print(f'{sido_name} {sigun_name} excel 파일 제거중')
             time.sleep(1)
         print(f'{sido_name} {sigun_name} excel 파일 제거완료')
-        # 엑셀 파일 이름 변경
-        # new_name = f'{sigun_name}_data.xls'
-        # new_path = os.path.join(download_dir, new_name)
-        # os.rename(excel_file_path, new_path)
         driver.quit()
 
     print(f"{sido_name} 크롤링 완료")
