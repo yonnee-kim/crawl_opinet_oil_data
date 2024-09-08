@@ -140,7 +140,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code):
         while True :
             excel_file_name = os.listdir(download_dir)[0]
             extension = excel_file_name.split('.')[1]
-            if extension == 'crdownload':
+            if extension != 'xls' and extension != 'xlsx':
                 time.sleep(0.1)
             else :
                 break
