@@ -216,25 +216,26 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code):
         print(f"{sido_name} 웹페이지 로드 실패:", e)
         driver.quit()  # 드라이버 종료
         sys.exit(1)  # 프로그램 종료
-
+    # 시도란 입력
     sido = WebDriverWait(driver, 10).until(
         EC.presence_of_element_located((By.XPATH, '//*[@id="SIDO_NM0"]'))
     )
     Select(sido).select_by_visible_text(sido_name)
     time.sleep(2)
+
     sigun_list =[]
     for sido in sidosigun_code['SIDO']:
         if sido['AREA_NM'] == sido_name :
             for sigun in sido['SIGUN']:
                 sigun_list.append(sigun['AREA_NM'])
     print(f'{sido_name} 시군리스트 : {sigun_list}')
-
     for sigun_name in sigun_list:
+        # 시군란 입력       
         sigun = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.XPATH, '//*[@id="SIGUNGU_NM0"]'))
         )
         Select(sigun).select_by_visible_text(sigun_name) # 시군 네임 입력
-        time.sleep(10)
+        time.sleep(30)
         while True :
             sigun_label = WebDriverWait(driver, 10).until(
                 EC.presence_of_element_located((By.XPATH, '//*[@id="SIGUNGU_NM"]'))
