@@ -93,12 +93,14 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code):
     chrome_options.add_argument("--window-size=1920x1080")  # 창 크기 설정
     chrome_options.add_argument("--no-sandbox")  # 보안 관련 옵션
     chrome_options.add_argument("--disable-dev-shm-usage")  # 리소스 제한 문제 해결
-
+    
+    # 시군리스트 초기화
     for sido in sidosigun_code['SIDO']:
         if sido['AREA_NM'] == sido_name :
             for sigun in sido['SIGUN']:
                 sigun_list.append(sigun['AREA_NM'])
     print(f'{sido_name} 시군리스트 : {sigun_list}')
+
     for sigun_name in sigun_list:
         driver = webdriver.Chrome(options=chrome_options)
         driver.get("https://www.opinet.co.kr/searRgSelect.do")
@@ -116,18 +118,47 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code):
             driver.quit()  # 드라이버 종료
             sys.exit(1)  # 프로그램 종료
         # 시도란 입력
-        sido = WebDriverWait(driver, 10).until(
+        sido = WebDriverWait(driver, 60).until(
             EC.presence_of_element_located((By.XPATH, '//*[@id="SIDO_NM0"]'))
         )
         Select(sido).select_by_visible_text(sido_name)
-        time.sleep(5)
+        start_time = time.time()
+        while True : 
+            try:
+                sigun_names = driver.find_elements(By.XPATH, '//*[@id="SIGUNGU_NM0"]/option')
+                test = sigun_names[1].get_attribute('value')
+                if test in sigun_list : 
+                    break
+                else:
+                    time.sleep(1)
+            except Exception as e:
+                time.sleep(1)
+        end_time = time.time()
+        elapsed_time = end_time - start_time
+        print(f"{sido_name} 시도란 입력완료 걸린 시간 : {elapsed_time:.1f}초")
+        time.sleep(2)
         # 시군란 입력       
         sigun = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.XPATH, '//*[@id="SIGUNGU_NM0"]'))
         )
         Select(sigun).select_by_visible_text(sigun_name) # 시군 네임 입력
-        time.sleep(20)
-        excel_download_button = WebDriverWait(driver, 10).until(
+        start_time = time.time()
+        while True:
+            try:
+                sigun = driver.find_element(By.XPATH, '//*[@id="SIGUNGU_NM0"]')
+                selected_option = Select(sigun).first_selected_option
+                print(selected_option.text)
+                if selected_option.text == sigun_name:
+                    break
+                else:
+                    time.sleep(1)
+            except:
+                time.sleep(1)
+        end_time = time.time()
+        elapsed_time = end_time - start_time
+        print(f"{sido_name} 시군란 입력완료 걸린 시간 : {elapsed_time:.1f}초")
+        time.sleep(2)
+        excel_download_button = WebDriverWait(driver, 50).until(
             EC.presence_of_element_located((By.XPATH, '//*[@id="templ_list0"]/div[7]/div/a'))
         )
         driver.execute_script("arguments[0].click();", excel_download_button)
@@ -141,6 +172,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code):
             excel_file_name = os.listdir(download_dir)[0]
             extension = excel_file_name.split('.')[1]
             if extension != 'xls' and extension != 'xlsx':
+                
                 time.sleep(0.1)
             else :
                 break
@@ -182,7 +214,7 @@ def get_opinet_oildata_crawler():
     sido_list = [sido['AREA_NM'] for sido in sidosigun_code['SIDO']]
     print(f'sido list = {sido_list}')
     recent_oil_data_list = []
-    with ThreadPoolExecutor(max_workers=8) as executor:  # 스레드 풀 생성
+    with ThreadPoolExecutor(max_workers=4) as executor:  # 스레드 풀 생성
         future_to_sido = {executor.submit(crawl_for_sido, sido_name, project_dir, sidosigun_code): sido_name for sido_name in sido_list}
         for future in as_completed(future_to_sido):
             sido_name = future_to_sido[future]
