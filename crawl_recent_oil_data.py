@@ -235,7 +235,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code):
             EC.presence_of_element_located((By.XPATH, '//*[@id="SIGUNGU_NM0"]'))
         )
         Select(sigun).select_by_visible_text(sigun_name) # 시군 네임 입력
-        time.sleep(10)
+        time.sleep(5)
         while True :
             sigun_label = WebDriverWait(driver, 10).until(
                 EC.presence_of_element_located((By.XPATH, '//*[@id="SIGUNGU_NM"]'))
@@ -252,7 +252,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code):
         while not os.path.exists(excel_file_path):
             print(f"{sido_name} {sigun_name} 엑셀파일 다운로드 대기중")
             time.sleep(1)
-        print(f'{sigun_name} excel 데이터 저장 완료')
+        print(f'{sido_name} {sigun_name} excel 데이터 저장 완료')
         # 엑셀 파일을 List로 변환
         data_frame = pd.read_excel(excel_file_path, skiprows=[0, 1])
         data_frame_list = data_frame.to_dict(orient='records')
@@ -261,9 +261,9 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code):
         os.remove(excel_file_path)
         # 파일이 없거나/삭제될때 까지 대기
         while os.path.exists(excel_file_path):
-            print('{sido_name} {sigun_name} 엑셀파일 제거중')
+            print(f'{sido_name} {sigun_name} 엑셀파일 제거중')
             time.sleep(1)
-        print('{sido_name} {sigun_name} 엑셀파일 제거완료')
+        print(f'{sido_name} {sigun_name} 엑셀파일 제거완료')
         # 엑셀 파일 이름 변경
         # new_name = f'{sigun_name}_data.xls'
         # new_path = os.path.join(download_dir, new_name)
@@ -286,7 +286,7 @@ def get_opinet_oildata_crawler():
     sido_list = [sido['AREA_NM'] for sido in sidosigun_code['SIDO']]
     print(f'sido list = {sido_list}')
     recent_oil_data_list = []
-    with ThreadPoolExecutor(max_workers=8) as executor:  # 스레드 풀 생성
+    with ThreadPoolExecutor(max_workers=1) as executor:  # 스레드 풀 생성
         future_to_sido = {executor.submit(crawl_for_sido, sido_name, project_dir, sidosigun_code): sido_name for sido_name in sido_list}
         for future in as_completed(future_to_sido):
             sido_name = future_to_sido[future]
