@@ -217,7 +217,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code):
     for sigun_name in sigun_list:
         driver = webdriver.Chrome(options=chrome_options)
         driver.get("https://www.opinet.co.kr/searRgSelect.do")
-        time.sleep(10)
+        time.sleep(30)
         try:
             # 특정 요소가 나타날 때까지 최대 10초 대기
             WebDriverWait(driver, 10).until(
@@ -233,22 +233,13 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code):
             EC.presence_of_element_located((By.XPATH, '//*[@id="SIDO_NM0"]'))
         )
         Select(sido).select_by_visible_text(sido_name)
-        time.sleep(4)
+        time.sleep(10)
         # 시군란 입력       
         sigun = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.XPATH, '//*[@id="SIGUNGU_NM0"]'))
         )
         Select(sigun).select_by_visible_text(sigun_name) # 시군 네임 입력
-        time.sleep(10)
-        while True :
-            sigun_label = WebDriverWait(driver, 10).until(
-                EC.presence_of_element_located((By.XPATH, '//*[@id="SIGUNGU_NM"]'))
-            )
-            if sigun_label.get_attribute('value') == sigun_name :
-                break
-            else:
-                print(f'{sido_name} 시군네임 입력중')
-                time.sleep(1)
+        time.sleep(30)
         excel_download_button = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.XPATH, '//*[@id="templ_list0"]/div[7]/div/a'))
         )
@@ -260,7 +251,12 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code):
         excel_file_name = os.listdir(download_dir)[0]
         excel_file_path = os.path.join(download_dir, excel_file_name)
         # 엑셀 파일을 List로 변환
-        data_frame = pd.read_excel(excel_file_path, skiprows=[0, 1], engine='xlrd')
+        extension = excel_file_path.split('.')[1]
+        if extension == 'xls' : 
+            data_frame = pd.read_excel(excel_file_path, skiprows=[0, 1], engine='xlrd')
+        else :
+            print(extension)   
+            data_frame = pd.read_excel(excel_file_path, skiprows=[0, 1], engine='openpyxl')
         data_frame_list = data_frame.to_dict(orient='records')
         sido_oil_data_list.extend(data_frame_list)
         # 엑셀 파일 제거
@@ -292,7 +288,7 @@ def get_opinet_oildata_crawler():
     sido_list = [sido['AREA_NM'] for sido in sidosigun_code['SIDO']]
     print(f'sido list = {sido_list}')
     recent_oil_data_list = []
-    with ThreadPoolExecutor(max_workers=8) as executor:  # 스레드 풀 생성
+    with ThreadPoolExecutor(max_workers=20) as executor:  # 스레드 풀 생성
         future_to_sido = {executor.submit(crawl_for_sido, sido_name, project_dir, sidosigun_code): sido_name for sido_name in sido_list}
         for future in as_completed(future_to_sido):
             sido_name = future_to_sido[future]
