@@ -93,21 +93,6 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code):
     chrome_options.add_argument("--window-size=1920x1080")  # 창 크기 설정
     chrome_options.add_argument("--no-sandbox")  # 보안 관련 옵션
     chrome_options.add_argument("--disable-dev-shm-usage")  # 리소스 제한 문제 해결
-    driver = webdriver.Chrome(options=chrome_options)
-    driver.get("https://www.opinet.co.kr/searRgSelect.do")
-    try:
-        start_time = time.time()
-        # 특정 요소가 나타날 때까지 최대 10초 대기
-        WebDriverWait(driver, 30).until(
-            EC.presence_of_element_located((By.XPATH, '//*[@id="SIDO_NM0"]'))
-        )
-        end_time = time.time()
-        elapsed_time = end_time - start_time
-        print(f"{sido_name} 웹페이지 로드 완료! 걸린 시간 : {elapsed_time:.1f}초")
-    except Exception as e:
-        print(f"{sido_name} 웹페이지 로드 실패:", e)
-        driver.quit()  # 드라이버 종료
-        sys.exit(1)  # 프로그램 종료
 
     for sido in sidosigun_code['SIDO']:
         if sido['AREA_NM'] == sido_name :
@@ -115,6 +100,21 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code):
                 sigun_list.append(sigun['AREA_NM'])
     print(f'{sido_name} 시군리스트 : {sigun_list}')
     for sigun_name in sigun_list:
+        driver = webdriver.Chrome(options=chrome_options)
+        driver.get("https://www.opinet.co.kr/searRgSelect.do")
+        try:
+            start_time = time.time()
+            # 특정 요소가 나타날 때까지 최대 10초 대기
+            WebDriverWait(driver, 30).until(
+                EC.presence_of_element_located((By.XPATH, '//*[@id="SIDO_NM0"]'))
+            )
+            end_time = time.time()
+            elapsed_time = end_time - start_time
+            print(f"{sido_name} 웹페이지 로드 완료! 걸린 시간 : {elapsed_time:.1f}초")
+        except Exception as e:
+            print(f"{sido_name} 웹페이지 로드 실패:", e)
+            driver.quit()  # 드라이버 종료
+            sys.exit(1)  # 프로그램 종료
         # 시도란 입력
         sido = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.XPATH, '//*[@id="SIDO_NM0"]'))
