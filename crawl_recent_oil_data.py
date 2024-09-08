@@ -102,105 +102,107 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code):
     print(f'{sido_name} 시군리스트 : {sigun_list}')
 
     for sigun_name in sigun_list:
-        while True:
-            try:
-                driver = webdriver.Chrome(options=chrome_options)
-                driver.get("https://www.opinet.co.kr/searRgSelect.do")
-                start_time = time.time()
-                # 특정 요소가 나타날 때까지 최대 10초 대기
-                WebDriverWait(driver, 60).until(
-                    EC.presence_of_element_located((By.XPATH, '//*[@id="SIDO_NM0"]'))
-                )
-                end_time = time.time()
-                elapsed_time = end_time - start_time
-                print(f"{sido_name} 웹페이지 로드 완료! 걸린 시간 : {elapsed_time:.1f}초")
-                break
-            except Exception as e:
-                print(f"{sido_name} 웹페이지 로드 실패:", e)
-                driver.quit()  # 드라이버 종료
-                
-        # 시도란 입력
-        sido = WebDriverWait(driver, 60).until(
-            EC.presence_of_element_located((By.XPATH, '//*[@id="SIDO_NM0"]'))
-        )
-        Select(sido).select_by_visible_text(sido_name)
-        start_time = time.time()
-        while True : 
-            try:
-                sigun_names = driver.find_elements(By.XPATH, '//*[@id="SIGUNGU_NM0"]/option')
-                test = sigun_names[1].get_attribute('value')
-                if test in sigun_list : 
+        retry = True
+        while retry:
+            while True:
+                try:
+                    driver = webdriver.Chrome(options=chrome_options)
+                    driver.get("https://www.opinet.co.kr/searRgSelect.do")
+                    start_time = time.time()
+                    # 특정 요소가 나타날 때까지 최대 10초 대기
+                    WebDriverWait(driver, 60).until(
+                        EC.presence_of_element_located((By.XPATH, '//*[@id="SIDO_NM0"]'))
+                    )
+                    end_time = time.time()
+                    elapsed_time = end_time - start_time
+                    print(f"{sido_name} 웹페이지 로드 완료! 걸린 시간 : {elapsed_time:.1f}초")
                     break
-                else:
+                except Exception as e:
+                    print(f"{sido_name} 웹페이지 로드 실패:", e)
+                    driver.quit()  # 드라이버 종료
+                    
+            # 시도란 입력
+            sido = WebDriverWait(driver, 60).until(
+                EC.presence_of_element_located((By.XPATH, '//*[@id="SIDO_NM0"]'))
+            )
+            Select(sido).select_by_visible_text(sido_name)
+            start_time = time.time()
+            while True : 
+                try:
+                    sigun_names = driver.find_elements(By.XPATH, '//*[@id="SIGUNGU_NM0"]/option')
+                    test = sigun_names[1].get_attribute('value')
+                    if test in sigun_list : 
+                        break
+                    else:
+                        time.sleep(0.1)
+                except Exception as e:
                     time.sleep(0.1)
-            except Exception as e:
-                time.sleep(0.1)
-        end_time = time.time()
-        elapsed_time = end_time - start_time
-        print(f"{sido_name} 시도란 입력완료 걸린 시간 : {elapsed_time:.1f}초")
-        # 시군란 입력       
-        sigun = WebDriverWait(driver, 60).until(
-            EC.presence_of_element_located((By.XPATH, '//*[@id="SIGUNGU_NM0"]'))
-        )
-        Select(sigun).select_by_visible_text(sigun_name) # 시군 네임 입력
-        start_time = time.time()
-        while True:
-            try:
-                sigun = driver.find_element(By.XPATH, '//*[@id="SIGUNGU_NM0"]')
-                selected_option = Select(sigun).first_selected_option
-                if selected_option.text == sigun_name:
-                    break
-                else:
+            end_time = time.time()
+            elapsed_time = end_time - start_time
+            print(f"{sido_name} 시도란 입력완료 걸린 시간 : {elapsed_time:.1f}초")
+            # 시군란 입력       
+            sigun = WebDriverWait(driver, 60).until(
+                EC.presence_of_element_located((By.XPATH, '//*[@id="SIGUNGU_NM0"]'))
+            )
+            Select(sigun).select_by_visible_text(sigun_name) # 시군 네임 입력
+            start_time = time.time()
+            while True:
+                try:
+                    sigun = driver.find_element(By.XPATH, '//*[@id="SIGUNGU_NM0"]')
+                    selected_option = Select(sigun).first_selected_option
+                    if selected_option.text == sigun_name:
+                        break
+                    else:
+                        time.sleep(0.1)
+                except:
                     time.sleep(0.1)
-            except:
-                time.sleep(0.1)
-        end_time = time.time()
-        elapsed_time = end_time - start_time
-        print(f"{sido_name} 시군란 입력완료 걸린 시간 : {elapsed_time:.1f}초")
-        time.sleep(1)
-        # 엑셀 다운로드
-        excel_download_button = WebDriverWait(driver, 60).until(
-            EC.presence_of_element_located((By.XPATH, '//*[@id="templ_list0"]/div[7]/div/a'))
-        )
-        driver.execute_script("arguments[0].click();", excel_download_button)
-        trycount = 0
-        retry = False
-        while not os.listdir(download_dir):
-            trycount += 1
-            print(f"{sido_name} {sigun_name} excel 파일 다운로드 대기중... {trycount}")
+            end_time = time.time()
+            elapsed_time = end_time - start_time
+            print(f"{sido_name} 시군란 입력완료 걸린 시간 : {elapsed_time:.1f}초")
             time.sleep(1)
-            if trycount >= 10 :
-                print(f"{sido_name} {sigun_name} excel 파일 다운로드 실패.. 다시시작")
-                retry = True
-                driver.quit()
-                break
-        if retry :
-            continue
-        print(f'{sido_name} {sigun_name} excel 파일 저장 완료')
-        while True :
-            excel_file_name = os.listdir(download_dir)[0]
-            extension = excel_file_name.split('.')[1]
-            if extension != 'xls' and extension != 'xlsx':
-                time.sleep(0.1)
+            # 엑셀 다운로드
+            excel_download_button = WebDriverWait(driver, 60).until(
+                EC.presence_of_element_located((By.XPATH, '//*[@id="templ_list0"]/div[7]/div/a'))
+            )
+            driver.execute_script("arguments[0].click();", excel_download_button)
+            trycount = 0
+            while not os.listdir(download_dir):
+                trycount += 1
+                print(f"{sido_name} {sigun_name} excel 파일 다운로드 대기중... {trycount}")
+                time.sleep(1)
+                retry = False
+                if trycount >= 10 :
+                    print(f"{sido_name} {sigun_name} excel 파일 다운로드 실패.. 다시시작")
+                    retry = True
+                    driver.quit()
+                    break
+            if retry :
+                continue
+            print(f'{sido_name} {sigun_name} excel 파일 저장 완료')
+            while True :
+                excel_file_name = os.listdir(download_dir)[0]
+                extension = excel_file_name.split('.')[1]
+                if extension != 'xls' and extension != 'xlsx':
+                    time.sleep(0.1)
+                else :
+                    break
+            # 엑셀 파일을 List로 변환
+            excel_file_path = os.path.join(download_dir, excel_file_name)
+            if extension == 'xls' : 
+                data_frame = pd.read_excel(excel_file_path, skiprows=[0, 1], engine='xlrd')
             else :
-                break
-        # 엑셀 파일을 List로 변환
-        excel_file_path = os.path.join(download_dir, excel_file_name)
-        if extension == 'xls' : 
-            data_frame = pd.read_excel(excel_file_path, skiprows=[0, 1], engine='xlrd')
-        else :
-            print(extension)   
-            data_frame = pd.read_excel(excel_file_path, skiprows=[0, 1], engine='openpyxl')
-        data_frame_list = data_frame.to_dict(orient='records')
-        sido_oil_data_list.extend(data_frame_list)
-        # 엑셀 파일 제거
-        os.remove(excel_file_path)
-        # 파일이 없거나/삭제될때 까지 대기
-        while os.path.exists(excel_file_path):
-            print(f'{sido_name} {sigun_name} excel 파일 제거중')
-            time.sleep(1)
-        print(f'{sido_name} {sigun_name} excel 파일 제거완료')
-        driver.quit()
+                print(extension)   
+                data_frame = pd.read_excel(excel_file_path, skiprows=[0, 1], engine='openpyxl')
+            data_frame_list = data_frame.to_dict(orient='records')
+            sido_oil_data_list.extend(data_frame_list)
+            # 엑셀 파일 제거
+            os.remove(excel_file_path)
+            # 파일이 없거나/삭제될때 까지 대기
+            while os.path.exists(excel_file_path):
+                print(f'{sido_name} {sigun_name} excel 파일 제거중')
+                time.sleep(1)
+            print(f'{sido_name} {sigun_name} excel 파일 제거완료')
+            driver.quit()
 
     print(f"{sido_name} 크롤링 완료")
     return sido_oil_data_list  # 각 시/군/구에 대한 데이터 반환
