@@ -249,10 +249,10 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code):
             EC.presence_of_element_located((By.XPATH, '//*[@id="templ_list0"]/div[7]/div/a'))
         )
         driver.execute_script("arguments[0].click();", excel_download_button)
-        while not os.path.exists(excel_file_path):
-            print(f"{sido_name} {sigun_name} 엑셀파일 다운로드 대기중")
+        while not os.listdir(download_dir):
+            print(f"{sido_name} {sigun_name} excel 파일 다운로드 대기중")
             time.sleep(1)
-        print(f'{sido_name} {sigun_name} excel 데이터 저장 완료')
+        print(f'{sido_name} {sigun_name} excel 파일 저장 완료')
         # 엑셀 파일을 List로 변환
         data_frame = pd.read_excel(excel_file_path, skiprows=[0, 1])
         data_frame_list = data_frame.to_dict(orient='records')
@@ -261,9 +261,9 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code):
         os.remove(excel_file_path)
         # 파일이 없거나/삭제될때 까지 대기
         while os.path.exists(excel_file_path):
-            print(f'{sido_name} {sigun_name} 엑셀파일 제거중')
+            print(f'{sido_name} {sigun_name} excel 파일 제거중')
             time.sleep(1)
-        print(f'{sido_name} {sigun_name} 엑셀파일 제거완료')
+        print(f'{sido_name} {sigun_name} excel 파일 제거완료')
         # 엑셀 파일 이름 변경
         # new_name = f'{sigun_name}_data.xls'
         # new_path = os.path.join(download_dir, new_name)
