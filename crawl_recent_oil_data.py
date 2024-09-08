@@ -235,7 +235,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code):
             EC.presence_of_element_located((By.XPATH, '//*[@id="SIGUNGU_NM0"]'))
         )
         Select(sigun).select_by_visible_text(sigun_name) # 시군 네임 입력
-        time.sleep(30)
+        time.sleep(5)
         while True :
             sigun_label = WebDriverWait(driver, 10).until(
                 EC.presence_of_element_located((By.XPATH, '//*[@id="SIGUNGU_NM"]'))
@@ -256,7 +256,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code):
         excel_file_name = os.listdir(download_dir)[0]
         excel_file_path = os.path.join(download_dir, excel_file_name)
         # 엑셀 파일을 List로 변환
-        data_frame = pd.read_excel(excel_file_path, skiprows=[0, 1])
+        data_frame = pd.read_excel(excel_file_path, skiprows=[0, 1], engine='xlrd')
         data_frame_list = data_frame.to_dict(orient='records')
         sido_oil_data_list.extend(data_frame_list)
         # 엑셀 파일 제거
@@ -288,7 +288,7 @@ def get_opinet_oildata_crawler():
     sido_list = [sido['AREA_NM'] for sido in sidosigun_code['SIDO']]
     print(f'sido list = {sido_list}')
     recent_oil_data_list = []
-    with ThreadPoolExecutor(max_workers=1) as executor:  # 스레드 풀 생성
+    with ThreadPoolExecutor(max_workers=8) as executor:  # 스레드 풀 생성
         future_to_sido = {executor.submit(crawl_for_sido, sido_name, project_dir, sidosigun_code): sido_name for sido_name in sido_list}
         for future in as_completed(future_to_sido):
             sido_name = future_to_sido[future]
