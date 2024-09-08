@@ -261,11 +261,11 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code):
         data_frame_list = data_frame.to_dict(orient='records')
         sido_oil_data_list.extend(data_frame_list)
         # 엑셀 파일 제거
-        # os.remove(excel_file_path)
+        os.remove(excel_file_path)
         # 엑셀 파일 이름 변경
-        new_name = f'{sigun_name}_data.xls'
-        new_path = os.path.join(download_dir, new_name)
-        os.rename(excel_file_path, new_path)
+        # new_name = f'{sigun_name}_data.xls'
+        # new_path = os.path.join(download_dir, new_name)
+        # os.rename(excel_file_path, new_path)
 
     driver.quit()
     print(f"{sido_name} 크롤링 완료")
