@@ -190,7 +190,6 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code):
     download_dir = os.path.join(project_dir, f'excel/{sido_name}')
     os.makedirs(download_dir, exist_ok=True)  # 디렉토리가 없으면 생성
     old_file_name = '지역_위치별(주유소).xls' 
-    excel_file_path = os.path.join(download_dir, old_file_name)
     sido_oil_data_list = []
     chrome_options = Options()
     chrome_options.add_experimental_option("prefs", {
@@ -235,7 +234,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code):
             EC.presence_of_element_located((By.XPATH, '//*[@id="SIGUNGU_NM0"]'))
         )
         Select(sigun).select_by_visible_text(sigun_name) # 시군 네임 입력
-        time.sleep(5)
+        time.sleep(10)
         while True :
             sigun_label = WebDriverWait(driver, 10).until(
                 EC.presence_of_element_located((By.XPATH, '//*[@id="SIGUNGU_NM"]'))
@@ -253,6 +252,9 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code):
             print(f"{sido_name} {sigun_name} excel 파일 다운로드 대기중")
             time.sleep(1)
         print(f'{sido_name} {sigun_name} excel 파일 저장 완료')
+        excel_file_name = os.listdir(download_dir)[0]
+        print(excel_file_name)
+        excel_file_path = os.path.join(download_dir, excel_file_name)
         # 엑셀 파일을 List로 변환
         data_frame = pd.read_excel(excel_file_path, skiprows=[0, 1])
         data_frame_list = data_frame.to_dict(orient='records')
