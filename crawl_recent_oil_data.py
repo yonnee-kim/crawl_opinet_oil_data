@@ -132,9 +132,9 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code):
                 if test in sigun_list : 
                     break
                 else:
-                    time.sleep(1)
+                    time.sleep(0.1)
             except Exception as e:
-                time.sleep(1)
+                time.sleep(0.1)
         end_time = time.time()
         elapsed_time = end_time - start_time
         print(f"{sido_name} 시도란 입력완료 걸린 시간 : {elapsed_time:.1f}초")
@@ -151,22 +151,31 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code):
                 if selected_option.text == sigun_name:
                     break
                 else:
-                    time.sleep(1)
+                    time.sleep(0.1)
             except:
-                time.sleep(1)
+                time.sleep(0.1)
         end_time = time.time()
         elapsed_time = end_time - start_time
         print(f"{sido_name} 시군란 입력완료 걸린 시간 : {elapsed_time:.1f}초")
-        time.sleep(2)
+        time.sleep(0)
+        # 엑셀 다운로드
         excel_download_button = WebDriverWait(driver, 60).until(
             EC.presence_of_element_located((By.XPATH, '//*[@id="templ_list0"]/div[7]/div/a'))
         )
         driver.execute_script("arguments[0].click();", excel_download_button)
         trycount = 0
+        retry = False
         while not os.listdir(download_dir):
             trycount += 1
             print(f"{sido_name} {sigun_name} excel 파일 다운로드 대기중... {trycount}")
             time.sleep(1)
+            if trycount >= 10 :
+                print(f"{sido_name} {sigun_name} excel 파일 다운로드 실패.. 다시시작")
+                retry = True
+                driver.quit()
+                break
+        if retry :
+            continue
         print(f'{sido_name} {sigun_name} excel 파일 저장 완료')
         while True :
             excel_file_name = os.listdir(download_dir)[0]
@@ -209,7 +218,7 @@ def get_opinet_oildata_crawler():
     sido_list = [sido['AREA_NM'] for sido in sidosigun_code['SIDO']]
     print(f'sido list = {sido_list}')
     recent_oil_data_list = []
-    with ThreadPoolExecutor(max_workers=4) as executor:  # 스레드 풀 생성
+    with ThreadPoolExecutor(max_workers=8) as executor:  # 스레드 풀 생성
         future_to_sido = {executor.submit(crawl_for_sido, sido_name, project_dir, sidosigun_code): sido_name for sido_name in sido_list}
         for future in as_completed(future_to_sido):
             sido_name = future_to_sido[future]
