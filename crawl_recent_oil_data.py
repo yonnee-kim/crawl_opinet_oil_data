@@ -192,30 +192,32 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code):
     old_file_name = '지역_위치별(주유소).xls' 
     sido_oil_data_list = []
     sigun_list =[]
+
+    chrome_options = Options()
+    chrome_options.add_experimental_option("prefs", {
+        "download.default_directory": download_dir,
+        "download.prompt_for_download": False,
+        "download.directory_upgrade": True,
+        "safebrowsing.enabled": True,
+        "intl.accept_languages": "ko-KR",
+    })
+    # 추가적인 Chrome 옵션을 설정
+    chrome_options.add_argument("--headless")  # Headless 모드 추가
+    chrome_options.add_argument("--start-maximized")  # 최대화 시작
+    chrome_options.add_argument("--disable-gpu")  # GPU 비활성화
+    chrome_options.add_argument("--window-size=1920x1080")  # 창 크기 설정
+    chrome_options.add_argument("--no-sandbox")  # 보안 관련 옵션
+    chrome_options.add_argument("--disable-dev-shm-usage")  # 리소스 제한 문제 해결
+
     for sido in sidosigun_code['SIDO']:
         if sido['AREA_NM'] == sido_name :
             for sigun in sido['SIGUN']:
                 sigun_list.append(sigun['AREA_NM'])
     print(f'{sido_name} 시군리스트 : {sigun_list}')
     for sigun_name in sigun_list:
-        chrome_options = Options()
-        chrome_options.add_experimental_option("prefs", {
-            "download.default_directory": download_dir,
-            "download.prompt_for_download": False,
-            "download.directory_upgrade": True,
-            "safebrowsing.enabled": True,
-            "intl.accept_languages": "ko-KR",
-        })
-        # 추가적인 Chrome 옵션을 설정
-        chrome_options.add_argument("--headless")  # Headless 모드 추가
-        chrome_options.add_argument("--start-maximized")  # 최대화 시작
-        chrome_options.add_argument("--disable-gpu")  # GPU 비활성화
-        chrome_options.add_argument("--window-size=1920x1080")  # 창 크기 설정
-        chrome_options.add_argument("--no-sandbox")  # 보안 관련 옵션
-        chrome_options.add_argument("--disable-dev-shm-usage")  # 리소스 제한 문제 해결
         driver = webdriver.Chrome(options=chrome_options)
         driver.get("https://www.opinet.co.kr/searRgSelect.do")
-        time.sleep(5)
+        time.sleep(10)
         try:
             # 특정 요소가 나타날 때까지 최대 10초 대기
             WebDriverWait(driver, 10).until(
@@ -231,13 +233,13 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code):
             EC.presence_of_element_located((By.XPATH, '//*[@id="SIDO_NM0"]'))
         )
         Select(sido).select_by_visible_text(sido_name)
-        time.sleep(2)
+        time.sleep(4)
         # 시군란 입력       
         sigun = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.XPATH, '//*[@id="SIGUNGU_NM0"]'))
         )
         Select(sigun).select_by_visible_text(sigun_name) # 시군 네임 입력
-        time.sleep(5)
+        time.sleep(10)
         while True :
             sigun_label = WebDriverWait(driver, 10).until(
                 EC.presence_of_element_located((By.XPATH, '//*[@id="SIGUNGU_NM"]'))
@@ -334,10 +336,9 @@ def get_opinet_oildata_crawler():
     print(f'{kst_now} 오피넷 유가정보 크롤링 완료.')
 
 # 함수 호출
-asyncio.run(get_sigun_code())
-get_opinet_oildata_crawler()
 async def main():
     await get_sigun_code()
+    get_opinet_oildata_crawler()
 
 if __name__ == "__main__":
     asyncio.run(main())
