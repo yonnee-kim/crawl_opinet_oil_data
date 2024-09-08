@@ -253,7 +253,6 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code):
             time.sleep(1)
         print(f'{sido_name} {sigun_name} excel 파일 저장 완료')
         excel_file_name = os.listdir(download_dir)[0]
-        print(excel_file_name)
         excel_file_path = os.path.join(download_dir, excel_file_name)
         # 엑셀 파일을 List로 변환
         data_frame = pd.read_excel(excel_file_path, skiprows=[0, 1])
