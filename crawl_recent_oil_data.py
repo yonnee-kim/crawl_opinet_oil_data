@@ -9,6 +9,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import StaleElementReferenceException, NoSuchElementException 
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from datetime import datetime, timedelta, timezone
 import time
 import os
 import pandas as pd
@@ -185,8 +186,6 @@ async def get_sigun_code():
     else:
         print('시도 시군 코드 변경사항 없음.')
 
-
-
 def crawl_for_sido(sido_name, project_dir, sidosigun_code):
     download_dir = os.path.join(project_dir, f'excel/{sido_name}')
     os.makedirs(download_dir, exist_ok=True)  # 디렉토리가 없으면 생성
@@ -322,6 +321,11 @@ def get_opinet_oildata_crawler():
     end_time = time.time()
     elapsed_time = end_time - start_time
     print(f'함수 실행 시간: {elapsed_time:.2f}초')
+    # 현재 UTC 시각 얻기
+    utc_now = datetime.now(timezone.utc)
+    # KST로 변환 (KST는 UTC+9)
+    kst_now = utc_now + timedelta(hours=9)
+    print(f'{kst_now} 오피넷 유가정보 크롤링 완료.')
 
 # 함수 호출
 asyncio.run(get_sigun_code())
