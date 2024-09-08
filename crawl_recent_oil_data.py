@@ -217,7 +217,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code):
     for sigun_name in sigun_list:
         driver = webdriver.Chrome(options=chrome_options)
         driver.get("https://www.opinet.co.kr/searRgSelect.do")
-        time.sleep(20)
+        time.sleep(15)
         try:
             # 특정 요소가 나타날 때까지 최대 10초 대기
             WebDriverWait(driver, 10).until(
@@ -239,7 +239,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code):
             EC.presence_of_element_located((By.XPATH, '//*[@id="SIGUNGU_NM0"]'))
         )
         Select(sigun).select_by_visible_text(sigun_name) # 시군 네임 입력
-        time.sleep(20)
+        time.sleep(15)
         excel_download_button = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.XPATH, '//*[@id="templ_list0"]/div[7]/div/a'))
         )
@@ -248,10 +248,15 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code):
             print(f"{sido_name} {sigun_name} excel 파일 다운로드 대기중")
             time.sleep(1)
         print(f'{sido_name} {sigun_name} excel 파일 저장 완료')
-        excel_file_name = os.listdir(download_dir)[0]
-        excel_file_path = os.path.join(download_dir, excel_file_name)
+        while True :
+            excel_file_name = os.listdir(download_dir)[0]
+            extension = excel_file_name.split('.')[1]
+            if excel_file_path == 'crdownload':
+                time.sleep(0.1)
+            else :
+                break
         # 엑셀 파일을 List로 변환
-        extension = excel_file_path.split('.')[1]
+        excel_file_path = os.path.join(download_dir, excel_file_name)
         if extension == 'xls' : 
             data_frame = pd.read_excel(excel_file_path, skiprows=[0, 1], engine='xlrd')
         else :
