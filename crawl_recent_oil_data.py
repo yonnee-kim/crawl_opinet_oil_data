@@ -134,9 +134,9 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code):
                     if test in sigun_list : 
                         break
                     else:
-                        time.sleep(0.1)
+                        time.sleep(0.5)
                 except Exception as e:
-                    time.sleep(0.1)
+                    time.sleep(0.5)
             end_time = time.time()
             elapsed_time = end_time - start_time
             print(f"{sido_name} 시도란 입력완료 걸린 시간 : {elapsed_time:.1f}초")
@@ -153,13 +153,13 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code):
                     if selected_option.text == sigun_name:
                         break
                     else:
-                        time.sleep(0.1)
+                        time.sleep(0.5)
                 except:
-                    time.sleep(0.1)
+                    time.sleep(0.5)
             end_time = time.time()
             elapsed_time = end_time - start_time
             print(f"{sido_name} 시군란 입력완료 걸린 시간 : {elapsed_time:.1f}초")
-            time.sleep(1)
+            time.sleep(2)
             # 엑셀 다운로드
             excel_download_button = WebDriverWait(driver, 60).until(
                 EC.presence_of_element_located((By.XPATH, '//*[@id="templ_list0"]/div[7]/div/a'))
