@@ -93,6 +93,29 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
     chrome_options.add_argument("--no-sandbox")  # 보안 관련 옵션
     chrome_options.add_argument("--disable-dev-shm-usage")  # 리소스 제한 문제 해결
 
+    driver = webdriver.Chrome(options=chrome_options)
+    driver.get("https://www.opinet.co.kr/searRgSelect.do")
+    while True:
+        cut_time = time.time()
+        if code_start_time - cut_time > 1800 :
+            sys.exit(1)
+        try:
+            start_time = time.time()
+            # 특정 요소가 나타날 때까지 최대 10초 대기
+            WebDriverWait(driver, 60).until(
+                EC.presence_of_element_located((By.XPATH, '//*[@id="SIDO_NM0"]'))
+            )
+            end_time = time.time()
+            elapsed_time = end_time - start_time
+            print(f"{sido_name} 웹페이지 로드 완료! 걸린 시간 : {elapsed_time:.1f}초")
+            break
+        except Exception as e:
+            end_time = time.time()
+            elapsed_time = end_time - start_time
+            print(f"{sido_name} 웹페이지 로드 실패 {elapsed_time}초:", e)
+            driver.refresh()  # 새로고침
+            time.sleep(2)
+            continue
             
     
     # 시군리스트 초기화
@@ -105,30 +128,6 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
     for sigun_name in sigun_list:
         retry = True
         while retry:
-            while True:
-                cut_time = time.time()
-                if code_start_time - cut_time > 1800 :
-                    sys.exit(1)
-                driver = webdriver.Chrome(options=chrome_options)
-                driver.get("https://www.opinet.co.kr/searRgSelect.do")
-                try:
-                    start_time = time.time()
-                    # 특정 요소가 나타날 때까지 최대 10초 대기
-                    WebDriverWait(driver, 60).until(
-                        EC.presence_of_element_located((By.XPATH, '//*[@id="SIDO_NM0"]'))
-                    )
-                    end_time = time.time()
-                    elapsed_time = end_time - start_time
-                    print(f"{sido_name} 웹페이지 로드 완료! 걸린 시간 : {elapsed_time:.1f}초")
-                    break
-                except Exception as e:
-                    end_time = time.time()
-                    elapsed_time = end_time - start_time
-                    print(f"{sido_name} 웹페이지 로드 실패 {elapsed_time}초:", e)
-                    driver.quit()  
-                    time.sleep(2)
-                    continue
-            
             # 시도란 입력
             sido = WebDriverWait(driver, 60).until(
                 EC.presence_of_element_located((By.XPATH, '//*[@id="SIDO_NM0"]'))
@@ -184,10 +183,10 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                 print(f"{sido_name} {sigun_name} excel 파일 다운로드 대기중... {trycount}")
                 time.sleep(1)
                 retry = False
-                if trycount >= 10 :
+                if trycount >= 30 :
                     print(f"{sido_name} {sigun_name} excel 파일 다운로드 실패.. 다시시작 ")
                     retry = True
-                    driver.quit() 
+                    driver.refresh()
                     break
             if retry :
                 continue
@@ -215,8 +214,9 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                 print(f'{sido_name} {sigun_name} excel 파일 제거중')
                 time.sleep(1)
             print(f'{sido_name} {sigun_name} excel 파일 제거완료')
-            driver.quit() 
+            driver.refresh()
 
+    driver.quit()
     print(f"{sido_name} 크롤링 완료")
     return sido_oil_data_list  # 각 시/군/구에 대한 데이터 반환
 
