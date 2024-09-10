@@ -71,7 +71,7 @@ async def get_sigun_code():
     else:
         print('시도 시군 코드 변경사항 없음.')
 
-def crawl_for_sido(sido_name, project_dir, sidosigun_code):
+def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
     download_dir = os.path.join(project_dir, f'lpg_excel/{sido_name}')
     os.makedirs(download_dir, exist_ok=True)  # 디렉토리가 없으면 생성
     sido_oil_data_list = []
@@ -105,6 +105,9 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code):
         retry = True
         while retry:
             while True:
+                cut_time = time.time()
+                if code_start_time - cut_time > 1800 :
+                    sys.exit(1)
                 try:
                     driver = webdriver.Chrome(options=chrome_options)
                     driver.get("https://www.opinet.co.kr/searRgSelect.do")
@@ -227,7 +230,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code):
     return sido_oil_data_list  # 각 시/군/구에 대한 데이터 반환
 
 def get_opinet_oildata_crawler():
-    start_time = time.time()
+    code_start_time = time.time()
     project_dir = os.path.dirname(os.path.abspath(__file__))
     json_dir = os.path.join(project_dir, f'json/')
     siguncode_file_name = 'sido_sigun_code.json' 
@@ -240,7 +243,7 @@ def get_opinet_oildata_crawler():
     print(f'sido list = {sido_list}')
     recent_oil_data_list = []
     with ThreadPoolExecutor(max_workers=8) as executor:  # 스레드 풀 생성
-        future_to_sido = {executor.submit(crawl_for_sido, sido_name, project_dir, sidosigun_code): sido_name for sido_name in sido_list}
+        future_to_sido = {executor.submit(crawl_for_sido, sido_name, project_dir, sidosigun_code, code_start_time): sido_name for sido_name in sido_list}
         for future in as_completed(future_to_sido):
             sido_name = future_to_sido[future]
             try:
@@ -274,7 +277,7 @@ def get_opinet_oildata_crawler():
     print('완료')
     # 실행 시간 측정
     end_time = time.time()
-    elapsed_time = end_time - start_time
+    elapsed_time = end_time - code_start_time
     print(f'get_opinet_oildata_crawler 함수 총 실행 시간: {elapsed_time:.2f}초')
     # 현재 UTC 시각 얻기
     utc_now = datetime.now(timezone.utc)
