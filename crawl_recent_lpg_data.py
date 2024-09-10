@@ -125,6 +125,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                     elapsed_time = end_time - start_time
                     print(f"{sido_name} 웹페이지 로드 실패 {elapsed_time}초:", e)
                     driver.quit()  # 드라이버 종료
+                    time.sleep(2)
                     continue
                     
             # 충전소 버튼 클릭
