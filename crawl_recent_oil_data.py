@@ -93,6 +93,13 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
     chrome_options.add_argument("--no-sandbox")  # 보안 관련 옵션
     chrome_options.add_argument("--disable-dev-shm-usage")  # 리소스 제한 문제 해결
 
+    # 시군리스트 초기화
+    for sido in sidosigun_code['SIDO']:
+        if sido['AREA_NM'] == sido_name :
+            for sigun in sido['SIGUN']:
+                sigun_list.append(sigun['AREA_NM'])
+    print(f'{sido_name} 시군리스트 : {sigun_list}')
+
     driver = webdriver.Chrome(options=chrome_options)
     driver.get("https://www.opinet.co.kr/searRgSelect.do")
     while True:
@@ -116,15 +123,6 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
             driver.refresh()  # 새로고침
             time.sleep(2)
             continue
-            
-    
-    # 시군리스트 초기화
-    for sido in sidosigun_code['SIDO']:
-        if sido['AREA_NM'] == sido_name :
-            for sigun in sido['SIGUN']:
-                sigun_list.append(sigun['AREA_NM'])
-    print(f'{sido_name} 시군리스트 : {sigun_list}')
-
     for sigun_name in sigun_list:
         retry = True
         while retry:
@@ -149,7 +147,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
             print(f"{sido_name} 시도란 입력완료 걸린 시간 : {elapsed_time:.1f}초")
             time.sleep(1)
             # 시군란 입력       
-            sigun = WebDriverWait(driver, 60).until(
+            sigun = WebDriverWait(driver, 10).until(
                 EC.presence_of_element_located((By.XPATH, '//*[@id="SIGUNGU_NM0"]'))
             )
             Select(sigun).select_by_visible_text(sigun_name) # 시군 네임 입력
@@ -164,6 +162,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                         time.sleep(0.5)
                 except:
                     time.sleep(0.5)
+            time.sleep(2)
             end_time = time.time()
             elapsed_time = end_time - start_time
             print(f"{sido_name} 시군란 입력완료 걸린 시간 : {elapsed_time:.1f}초")
