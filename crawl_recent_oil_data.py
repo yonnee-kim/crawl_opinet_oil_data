@@ -186,6 +186,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                     print(f"{sido_name} {sigun_name} excel 파일 다운로드 실패.. 다시시작 ")
                     retry = True
                     driver.refresh()
+                    time.sleep(1)
                     break
             if retry :
                 continue
@@ -214,6 +215,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                 time.sleep(1)
             print(f'{sido_name} {sigun_name} excel 파일 제거완료')
             driver.refresh()
+            time.sleep(1)
 
     driver.quit()
     print(f"{sido_name} 크롤링 완료")
