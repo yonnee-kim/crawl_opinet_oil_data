@@ -123,6 +123,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                 except Exception as e:
                     print(f"{sido_name} 웹페이지 로드 실패:", e)
                     driver.quit()  # 드라이버 종료
+                    continue
                     
             # 시도란 입력
             sido = WebDriverWait(driver, 60).until(
