@@ -14,7 +14,6 @@ import time
 import os
 import pandas as pd
 import sys
-import urllib.parse
 
 async def get_sigun_code():
     # getAreaCode
@@ -24,7 +23,7 @@ async def get_sigun_code():
     file_path = os.path.join(download_dir,file_name)
     path = 'json/sido_sigun_code.json';
     repo = 'yonnee-kim/fetch_opinet_api'
-    token = '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'
+    token = os.getenv('GITHUB_TOKEN')  # 환경 변수에서 토큰 가져오기
     url = f'https://api.github.com/repos/{repo}/contents/{path}'
     headers = {
         'Authorization': f'token {token}',
