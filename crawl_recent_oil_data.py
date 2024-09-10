@@ -100,12 +100,12 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                 sigun_list.append(sigun['AREA_NM'])
     print(f'{sido_name} 시군리스트 : {sigun_list}')
 
-    driver = webdriver.Chrome(options=chrome_options)
-    driver.get("https://www.opinet.co.kr/searRgSelect.do")
     while True:
         cut_time = time.time()
         if code_start_time - cut_time > 1800 :
             sys.exit(1)
+        driver = webdriver.Chrome(options=chrome_options)
+        driver.get("https://www.opinet.co.kr/searRgSelect.do")
         try:
             start_time = time.time()
             # 특정 요소가 나타날 때까지 최대 10초 대기
@@ -120,9 +120,10 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
             end_time = time.time()
             elapsed_time = end_time - start_time
             print(f"{sido_name} 웹페이지 로드 실패 {elapsed_time}초:", e)
-            driver.refresh()  # 새로고침
+            driver.quit()  # 새로고침
             time.sleep(2)
             continue
+
     for sigun_name in sigun_list:
         retry = True
         while retry:
@@ -138,7 +139,10 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                 end_time = time.time()
                 elapsed_time = end_time - start_time
                 print(f"{sido_name} 웹페이지 로드 실패 {elapsed_time}초:", e)
-                driver.refresh()  # 새로고침
+                driver.quit()  # 재시작
+                time.sleep(2)
+                driver = webdriver.Chrome(options=chrome_options)
+                driver.get("https://www.opinet.co.kr/searRgSelect.do")
                 time.sleep(2)
                 continue
             
