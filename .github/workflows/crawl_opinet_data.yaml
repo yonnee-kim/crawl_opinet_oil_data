@@ -2,7 +2,7 @@ name: Scheduled Tasks crawlOpinetData
 
 on:
   schedule:
-    - cron: '0 16,0,3,7,10 * * *' # 매일 한국 시간(KST, UTC+9) 1시, 9시, 12시, 16시, 19시에 실행
+    - cron: '0 0,3,7,10 * * *' # 매일 한국 시간(KST, UTC+9) 9시, 12시, 16시, 19시에 실행
   workflow_dispatch: # 수동 실행을 위한 트리거 추가
 
 jobs:
@@ -11,10 +11,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4
         with:
           python-version: 3.x
 
@@ -22,8 +22,6 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y build-essential libffi-dev
-          # sudo apt-get install -y chromium-browser
-          # sudo apt-get install -y xvfb
 
       - name: Install Python dependencies
         run: |
@@ -34,7 +32,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: run-code  # run-code 작업이 완료된 후에 실행
     steps:
-      - name: Run crawl_recent_oildata
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run crawl_recent_oil_data
         run: |
           python crawl_recent_oil_data.py
 
@@ -42,7 +43,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: run-code  # run-code 작업이 완료된 후에 실행
     steps:
-      - name: Run crawl_recent_lpgdata
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run crawl_recent_lpg_data
         run: |
           python crawl_recent_lpg_data.py
 
@@ -50,6 +54,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: [crawl_oil_data, crawl_lpg_data]  # 두 작업이 완료된 후에 실행
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Configure Git
         run: |
           git config --local user.email "yhsofa89@gmail.com"
@@ -62,5 +69,8 @@ jobs:
           git add json/ # 필요한 파일 추가
           if [[ $(git diff --cached --stat) ]]; then
             echo "json/ 디렉토리 내 파일 내용 변경사항 있음"
+            git commit -m "Update data files from GitHub Actions" --allow-empty
+            git push
+          else
+            echo "No changes to commit"
           fi
-          git commit -m "Update data files from GitHub Actions" --allow-empty && git push || echo "No changes to commit"
