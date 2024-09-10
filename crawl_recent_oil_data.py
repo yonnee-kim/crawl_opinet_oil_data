@@ -126,6 +126,22 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
     for sigun_name in sigun_list:
         retry = True
         while retry:
+            try:
+                start_time = time.time()
+                # 특정 요소가 나타날 때까지 최대 10초 대기
+                WebDriverWait(driver, 60).until(
+                    EC.presence_of_element_located((By.XPATH, '//*[@id="SIDO_NM0"]'))
+                )
+                end_time = time.time()
+                elapsed_time = end_time - start_time
+            except Exception as e:
+                end_time = time.time()
+                elapsed_time = end_time - start_time
+                print(f"{sido_name} 웹페이지 로드 실패 {elapsed_time}초:", e)
+                driver.refresh()  # 새로고침
+                time.sleep(2)
+                continue
+            
             # 시도란 입력
             sido = WebDriverWait(driver, 60).until(
                 EC.presence_of_element_located((By.XPATH, '//*[@id="SIDO_NM0"]'))
@@ -186,9 +202,9 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                     print(f"{sido_name} {sigun_name} excel 파일 다운로드 실패.. 다시시작 ")
                     retry = True
                     driver.refresh()
-                    time.sleep(1)
                     break
             if retry :
+                time.sleep(1)
                 continue
             print(f'{sido_name} {sigun_name} excel 파일 저장 완료')
             while True :
