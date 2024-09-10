@@ -72,9 +72,8 @@ async def get_sigun_code():
         print('시도 시군 코드 변경사항 없음.')
 
 def crawl_for_sido(sido_name, project_dir, sidosigun_code):
-    download_dir = os.path.join(project_dir, f'excel/{sido_name}')
+    download_dir = os.path.join(project_dir, f'lpg_excel/{sido_name}')
     os.makedirs(download_dir, exist_ok=True)  # 디렉토리가 없으면 생성
-    old_file_name = '지역_위치별(주유소).xls' 
     sido_oil_data_list = []
     sigun_list =[]
 
@@ -93,6 +92,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code):
     chrome_options.add_argument("--window-size=1920x1080")  # 창 크기 설정
     chrome_options.add_argument("--no-sandbox")  # 보안 관련 옵션
     chrome_options.add_argument("--disable-dev-shm-usage")  # 리소스 제한 문제 해결
+
     
     # 시군리스트 초기화
     for sido in sidosigun_code['SIDO']:
@@ -101,7 +101,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code):
                 sigun_list.append(sigun['AREA_NM'])
     print(f'{sido_name} 시군리스트 : {sigun_list}')
 
-    for sigun_name in sigun_list:
+    for sigun_name in sigun_list :
         retry = True
         while retry:
             while True:
@@ -121,6 +121,25 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code):
                     print(f"{sido_name} 웹페이지 로드 실패:", e)
                     driver.quit()  # 드라이버 종료
                     
+            # 충전소 버튼 클릭
+            lpg_button = WebDriverWait(driver, 60).until(
+                EC.presence_of_element_located((By.XPATH, '//*[@id="LPG_BTN"]'))
+            )
+            driver.execute_script("arguments[0].click();", lpg_button)
+            start_time = time.time()
+            while True : 
+                try:
+                    std_btn = driver.find_element(By.XPATH, '//*[@id="BTN_DIV"]')
+                    test = std_btn.get_attribute('value')
+                    if test == 'lpg_btn' : 
+                        break
+                    else:
+                        time.sleep(0.5)
+                except Exception as e:
+                    time.sleep(0.5)
+            end_time = time.time()
+            elapsed_time = end_time - start_time
+            print(f"{sido_name} 충전소 페이지 로드 완료 걸린 시간 : {elapsed_time:.1f}초")
             # 시도란 입력
             sido = WebDriverWait(driver, 60).until(
                 EC.presence_of_element_located((By.XPATH, '//*[@id="SIDO_NM0"]'))
@@ -162,7 +181,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code):
             time.sleep(2)
             # 엑셀 다운로드
             excel_download_button = WebDriverWait(driver, 60).until(
-                EC.presence_of_element_located((By.XPATH, '//*[@id="templ_list0"]/div[7]/div/a'))
+                EC.presence_of_element_located((By.XPATH, '//*[@id="templ_list0"]/div[6]/div/a')) 
             )
             driver.execute_script("arguments[0].click();", excel_download_button)
             trycount = 0
@@ -242,7 +261,7 @@ def get_opinet_oildata_crawler():
             seen.add(item_tuple)  # 처음 본 요소 추가
     print("중복된 요소 개수:",len(list(duplicates)))  # 출력: 중복된 요소 개수
     print("중복된 요소:", list(duplicates))  # 출력: 중복된 요소: [1, 2, 3]
-    json_file_name = 'recent_oil_data.json'  # JSON 파일 이름 설정
+    json_file_name = 'recent_lpg_data.json'  # JSON 파일 이름 설정
     json_dir = os.path.join(project_dir, 'json/') # JSON 경로 설정
     data_file_path = os.path.join(json_dir, json_file_name)
     recent_oil_data_df = pd.DataFrame(recent_oil_data_list)
@@ -261,7 +280,7 @@ def get_opinet_oildata_crawler():
     utc_now = datetime.now(timezone.utc)
     # KST로 변환 (KST는 UTC+9)
     kst_now = utc_now + timedelta(hours=9)
-    print(f'{kst_now} 오피넷 유가정보 크롤링 완료.')
+    print(f'{kst_now} 오피넷 (LPG)유가정보 크롤링 완료.')
 
 # 함수 호출
 async def main():
