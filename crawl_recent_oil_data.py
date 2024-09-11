@@ -251,7 +251,6 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                 driver.get("https://www.opinet.co.kr/searRgSelect.do")
                 continue
                 
-                    
             # 엑셀 파일을 List로 변환
             excel_file_path = os.path.join(download_dir, excel_file_name)
             if extension == 'xls' : 
