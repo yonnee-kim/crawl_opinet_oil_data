@@ -144,10 +144,9 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                 elapsed_time = end_time - start_time
                 print(f"{sido_name} 웹페이지 로드 실패 {elapsed_time:.1f}초:", e)
                 driver.quit()  # 재시작
-                time.sleep(5)
+                time.sleep(2)
                 driver = webdriver.Chrome(options=chrome_options)
                 driver.get("https://www.opinet.co.kr/searRgSelect.do")
-                time.sleep(5)
                 continue
             # 시도란 입력
             sido = WebDriverWait(driver, 60).until(
@@ -221,15 +220,17 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                 print(f"{sido_name} {sigun_name} excel 파일 다운로드 대기중... {trycount}")
                 time.sleep(1)
                 retry = False
-                if trycount >= 10 :
+                if trycount > 5 :
                     print(f"{sido_name} {sigun_name} excel 파일 다운로드 실패.. 다시시작 ")
                     retry = True
                     break
             if retry :
-                driver.refresh()
+                driver.quit()
                 time.sleep(2)
+                driver = webdriver.Chrome(options=chrome_options)
+                driver.get("https://www.opinet.co.kr/searRgSelect.do")
                 continue
-            print(f'{sido_name} {sigun_name} excel 파일 저장 완료')
+            print(f'{sido_name} {sigun_name} excel 파일 저장 완료. 시도횟수 : {trycount}')
             while True :
                 excel_file_name = os.listdir(download_dir)[0]
                 extension = excel_file_name.split('.')[1]
