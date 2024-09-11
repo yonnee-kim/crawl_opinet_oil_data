@@ -174,7 +174,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
             end_time = time.time()
             elapsed_time = end_time - start_time
             print(f"{sido_name} 시도란 입력완료 걸린 시간 : {elapsed_time:.1f}초")
-            # time.sleep(1)
+            time.sleep(1)
             # 시군란 입력       
             sigun = WebDriverWait(driver, 10).until(
                 EC.presence_of_element_located((By.XPATH, '//*[@id="SIGUNGU_NM0"]'))
@@ -197,7 +197,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                     time.sleep(0.5)
             if trycount>10:
                 continue
-            # time.sleep(1)
+            time.sleep(1)
             end_time = time.time()
             elapsed_time = end_time - start_time
             print(f"{sido_name} 시군란 입력완료 걸린 시간 : {elapsed_time:.1f}초")
