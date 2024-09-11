@@ -211,7 +211,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                 excel_file_path = os.path.join(download_dir, excel_file_name)
                 os.remove(excel_file_path)
             # 엑셀 다운로드
-            excel_download_button = WebDriverWait(driver, 60).until(
+            excel_download_button = WebDriverWait(driver, 10).until(
                 EC.presence_of_element_located((By.XPATH, '//*[@id="templ_list0"]/div[7]/div/a'))
             )
             driver.execute_script("arguments[0].click();", excel_download_button)
