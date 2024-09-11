@@ -155,7 +155,6 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
             )
             Select(sido).select_by_visible_text(sido_name)
             start_time = time.time()
-            time.sleep(1)
             trycount = 0
             while True : 
                 try:
@@ -177,6 +176,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
             end_time = time.time()
             elapsed_time = end_time - start_time
             print(f"{sido_name} 시도란 입력완료 걸린 시간 : {elapsed_time:.1f}초")
+            time.sleep(1)
             # 시군란 입력       
             sigun = WebDriverWait(driver, 10).until(
                 EC.presence_of_element_located((By.XPATH, '//*[@id="SIGUNGU_NM0"]'))
