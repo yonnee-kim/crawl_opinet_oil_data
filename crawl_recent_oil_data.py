@@ -119,7 +119,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
         except Exception as e:
             end_time = time.time()
             elapsed_time = end_time - start_time
-            print(f"{sido_name} 초기 웹페이지 로드 실패 {elapsed_time}초:", e)
+            print(f"{sido_name} 초기 웹페이지 로드 실패 {elapsed_time:.1f}초:", e)
             driver.quit()  # 새로고침
             time.sleep(2)
             continue
@@ -135,11 +135,11 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                 )
                 end_time = time.time()
                 elapsed_time = end_time - start_time
-                print(f"{sido_name} 웹페이지 로드 성공 {elapsed_time}초:")
+                print(f"{sido_name} 웹페이지 로드 성공 {elapsed_time:.1f}초:")
             except Exception as e:
                 end_time = time.time()
                 elapsed_time = end_time - start_time
-                print(f"{sido_name} 웹페이지 로드 실패 {elapsed_time}초:", e)
+                print(f"{sido_name} 웹페이지 로드 실패 {elapsed_time:.1f}초:", e)
                 driver.quit()  # 재시작
                 time.sleep(5)
                 driver = webdriver.Chrome(options=chrome_options)
@@ -160,9 +160,10 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                     test = sigun_names[1].get_attribute('value')
                     if test in sigun_list : 
                         break
-                    elif trycount > 10:
+                    elif trycount > 20:
                         break
                     else:
+                        trycount += 1
                         time.sleep(0.5)
                 except Exception as e:
                     time.sleep(0.5)
@@ -185,9 +186,10 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                     selected_option = Select(sigun).first_selected_option
                     if selected_option.text == sigun_name:
                         break
-                    elif trycount > 10 :
+                    elif trycount > 20 :
                         break
                     else:
+                        trycount += 1
                         time.sleep(0.5)
                 except:
                     time.sleep(0.5)
