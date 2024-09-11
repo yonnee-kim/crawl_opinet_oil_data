@@ -101,9 +101,6 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
     print(f'{sido_name} 시군리스트 : {sigun_list}')
 
     while True:
-        cut_time = time.time()
-        if code_start_time - cut_time > 1800 :
-            sys.exit(1)
         driver = webdriver.Chrome(options=chrome_options)
         driver.get("https://www.opinet.co.kr/searRgSelect.do")
         try:
@@ -115,7 +112,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
             end_time = time.time()
             elapsed_time = end_time - start_time
             print(f"{sido_name} 초기 웹페이지 로드 완료! 걸린 시간 : {elapsed_time:.1f}초")
-            time.sleep(1)
+            time.sleep(3)
             break
         except Exception as e:
             end_time = time.time()
@@ -129,7 +126,8 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
         retry = True
         while retry:
             cut_time = time.time()
-            if code_start_time - cut_time > 1800 :
+            if  cut_time - code_start_time > 1800 :
+                print(f"{sido_name} {sigun_name} 실행시간 초과, 코드 종료...\n")
                 sys.exit(1)
             try:
                 start_time = time.time()
@@ -140,7 +138,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                 end_time = time.time()
                 elapsed_time = end_time - start_time
                 print(f"{sido_name} 웹페이지 로드 성공 {elapsed_time:.1f}초:")
-                time.sleep(3)
+                time.sleep(1)
             except Exception as e:
                 end_time = time.time()
                 elapsed_time = end_time - start_time
@@ -275,7 +273,7 @@ def get_opinet_oildata_crawler():
     sido_list = [sido['AREA_NM'] for sido in sidosigun_code['SIDO']]
     print(f'sido list = {sido_list}')
     recent_oil_data_list = []
-    with ThreadPoolExecutor(max_workers=4) as executor:  # 스레드 풀 생성
+    with ThreadPoolExecutor(max_workers=8) as executor:  # 스레드 풀 생성
         future_to_sido = {executor.submit(crawl_for_sido, sido_name, project_dir, sidosigun_code, code_start_time): sido_name for sido_name in sido_list}
         for future in as_completed(future_to_sido):
             sido_name = future_to_sido[future]
