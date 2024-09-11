@@ -39,8 +39,8 @@ async def get_sigun_code():
             async with session.get(url, headers = headers) as response:
                 try:
                     if response.status == 200:
-                        print('get_sigun_code url 연결 성공')
                         data = await response.json(content_type='application/vnd.github.v3.raw')  # JSON 응답을 직접 파싱
+                        print('get_sigun_code url 연결 성공')
                         print(data)
                         is_connect = True
                     elif try_count > 0:
@@ -170,6 +170,8 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                 except Exception as e:
                     time.sleep(0.5)
             if trycount > 10:
+                driver.refresh()
+                time.sleep(1)
                 continue
             end_time = time.time()
             elapsed_time = end_time - start_time
@@ -196,6 +198,8 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                 except:
                     time.sleep(0.5)
             if trycount>10:
+                driver.refresh()
+                time.sleep(1)
                 continue
             time.sleep(1)
             end_time = time.time()
@@ -220,10 +224,10 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                 if trycount >= 10 :
                     print(f"{sido_name} {sigun_name} excel 파일 다운로드 실패.. 다시시작 ")
                     retry = True
-                    driver.refresh()
                     break
             if retry :
-                time.sleep(1)
+                driver.refresh()
+                time.sleep(2)
                 continue
             print(f'{sido_name} {sigun_name} excel 파일 저장 완료')
             while True :
