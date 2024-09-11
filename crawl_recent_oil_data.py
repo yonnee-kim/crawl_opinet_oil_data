@@ -135,7 +135,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                 )
                 end_time = time.time()
                 elapsed_time = end_time - start_time
-                print(f"{sido_name} 웹페이지 로드 성공 {elapsed_time}초:", e)
+                print(f"{sido_name} 웹페이지 로드 성공 {elapsed_time}초:")
             except Exception as e:
                 end_time = time.time()
                 elapsed_time = end_time - start_time
