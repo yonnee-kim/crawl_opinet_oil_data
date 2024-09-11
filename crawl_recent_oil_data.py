@@ -127,6 +127,9 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
     for sigun_name in sigun_list:
         retry = True
         while retry:
+            cut_time = time.time()
+            if code_start_time - cut_time > 1800 :
+                sys.exit(1)
             try:
                 start_time = time.time()
                 # 특정 요소가 나타날 때까지 최대 10초 대기
@@ -146,7 +149,6 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                 driver.get("https://www.opinet.co.kr/searRgSelect.do")
                 time.sleep(5)
                 continue
-            
             # 시도란 입력
             sido = WebDriverWait(driver, 60).until(
                 EC.presence_of_element_located((By.XPATH, '//*[@id="SIDO_NM0"]'))
@@ -172,7 +174,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
             end_time = time.time()
             elapsed_time = end_time - start_time
             print(f"{sido_name} 시도란 입력완료 걸린 시간 : {elapsed_time:.1f}초")
-            time.sleep(1)
+            # time.sleep(1)
             # 시군란 입력       
             sigun = WebDriverWait(driver, 10).until(
                 EC.presence_of_element_located((By.XPATH, '//*[@id="SIGUNGU_NM0"]'))
@@ -195,7 +197,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                     time.sleep(0.5)
             if trycount>10:
                 continue
-            time.sleep(2)
+            # time.sleep(1)
             end_time = time.time()
             elapsed_time = end_time - start_time
             print(f"{sido_name} 시군란 입력완료 걸린 시간 : {elapsed_time:.1f}초")
