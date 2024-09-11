@@ -109,7 +109,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
         try:
             start_time = time.time()
             # 특정 요소가 나타날 때까지 최대 10초 대기
-            WebDriverWait(driver, 60).until(
+            WebDriverWait(driver, 20).until(
                 EC.presence_of_element_located((By.XPATH, '//*[@id="SIDO_NM0"]'))
             )
             end_time = time.time()
