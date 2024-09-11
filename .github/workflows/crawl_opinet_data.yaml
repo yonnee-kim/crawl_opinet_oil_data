@@ -30,9 +30,14 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run crawl_recent_oildata
+      - name: generate .env
+        run: |
+          echo "REPOSITORY_TOKEN=$REPOSITORY_TOKEN" >> .env
         env:
-          GITHUB_TOKEN: ${{ secrets.REPOSITORY_TOKEN }}  # 시크릿 사용
+          GITHUB_TOKEN: ${{ secrets.REPOSITORY_TOKEN }  # 시크릿 사용
+
+      - name: Run crawl_recent_oildata
+
         run: |
           python crawl_recent_oil_data.py
 
