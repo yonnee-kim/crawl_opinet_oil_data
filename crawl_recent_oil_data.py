@@ -140,10 +140,10 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                 elapsed_time = end_time - start_time
                 print(f"{sido_name} 웹페이지 로드 실패 {elapsed_time}초:", e)
                 driver.quit()  # 재시작
-                time.sleep(2)
+                time.sleep(5)
                 driver = webdriver.Chrome(options=chrome_options)
                 driver.get("https://www.opinet.co.kr/searRgSelect.do")
-                time.sleep(2)
+                time.sleep(5)
                 continue
             
             # 시도란 입력
@@ -202,7 +202,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                 print(f"{sido_name} {sigun_name} excel 파일 다운로드 대기중... {trycount}")
                 time.sleep(1)
                 retry = False
-                if trycount >= 30 :
+                if trycount >= 10 :
                     print(f"{sido_name} {sigun_name} excel 파일 다운로드 실패.. 다시시작 ")
                     retry = True
                     driver.refresh()
