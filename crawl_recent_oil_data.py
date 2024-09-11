@@ -114,12 +114,12 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
             )
             end_time = time.time()
             elapsed_time = end_time - start_time
-            print(f"{sido_name} 웹페이지 로드 완료! 걸린 시간 : {elapsed_time:.1f}초")
+            print(f"{sido_name} 초기 웹페이지 로드 완료! 걸린 시간 : {elapsed_time:.1f}초")
             break
         except Exception as e:
             end_time = time.time()
             elapsed_time = end_time - start_time
-            print(f"{sido_name} 웹페이지 로드 실패 {elapsed_time}초:", e)
+            print(f"{sido_name} 초기 웹페이지 로드 실패 {elapsed_time}초:", e)
             driver.quit()  # 새로고침
             time.sleep(2)
             continue
@@ -130,11 +130,12 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
             try:
                 start_time = time.time()
                 # 특정 요소가 나타날 때까지 최대 10초 대기
-                WebDriverWait(driver, 60).until(
+                WebDriverWait(driver, 20).until(
                     EC.presence_of_element_located((By.XPATH, '//*[@id="SIDO_NM0"]'))
                 )
                 end_time = time.time()
                 elapsed_time = end_time - start_time
+                print(f"{sido_name} 웹페이지 로드 성공 {elapsed_time}초:", e)
             except Exception as e:
                 end_time = time.time()
                 elapsed_time = end_time - start_time
@@ -152,16 +153,21 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
             )
             Select(sido).select_by_visible_text(sido_name)
             start_time = time.time()
+            trycount = 0
             while True : 
                 try:
                     sigun_names = driver.find_elements(By.XPATH, '//*[@id="SIGUNGU_NM0"]/option')
                     test = sigun_names[1].get_attribute('value')
                     if test in sigun_list : 
                         break
+                    elif trycount > 10:
+                        break
                     else:
                         time.sleep(0.5)
                 except Exception as e:
                     time.sleep(0.5)
+            if trycount > 10:
+                continue
             end_time = time.time()
             elapsed_time = end_time - start_time
             print(f"{sido_name} 시도란 입력완료 걸린 시간 : {elapsed_time:.1f}초")
@@ -172,16 +178,21 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
             )
             Select(sigun).select_by_visible_text(sigun_name) # 시군 네임 입력
             start_time = time.time()
+            trycount=0
             while True:
                 try:
                     sigun = driver.find_element(By.XPATH, '//*[@id="SIGUNGU_NM0"]')
                     selected_option = Select(sigun).first_selected_option
                     if selected_option.text == sigun_name:
                         break
+                    elif trycount > 10 :
+                        break
                     else:
                         time.sleep(0.5)
                 except:
                     time.sleep(0.5)
+            if trycount>10:
+                continue
             time.sleep(2)
             end_time = time.time()
             elapsed_time = end_time - start_time
