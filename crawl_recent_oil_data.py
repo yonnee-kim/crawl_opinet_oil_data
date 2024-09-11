@@ -220,7 +220,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                 print(f"{sido_name} {sigun_name} excel 파일 다운로드 대기중... {trycount}")
                 time.sleep(1)
                 retry = False
-                if trycount > 5 :
+                if trycount > 3 :
                     print(f"{sido_name} {sigun_name} excel 파일 다운로드 실패.. 다시시작 ")
                     retry = True
                     break
@@ -231,13 +231,27 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                 driver.get("https://www.opinet.co.kr/searRgSelect.do")
                 continue
             print(f'{sido_name} {sigun_name} excel 파일 저장 완료. 시도횟수 : {trycount}')
+            trycount = 0
             while True :
                 excel_file_name = os.listdir(download_dir)[0]
                 extension = excel_file_name.split('.')[1]
-                if extension != 'xls' and extension != 'xlsx':
-                    time.sleep(0.1)
-                else :
+                if extension == 'xls' or extension == 'xlsx':
+                    retry = False
                     break
+                elif trycount > 5 :
+                    trycount += 1
+                    print(f'{sido_name} {sigun_name} 파일 확장자명 : {extension}')
+                    time.sleep(1)
+                    retry = True
+                    break
+            if retry :
+                driver.quit()
+                time.sleep(2)
+                driver = webdriver.Chrome(options=chrome_options)
+                driver.get("https://www.opinet.co.kr/searRgSelect.do")
+                continue
+                
+                    
             # 엑셀 파일을 List로 변환
             excel_file_path = os.path.join(download_dir, excel_file_name)
             if extension == 'xls' : 
