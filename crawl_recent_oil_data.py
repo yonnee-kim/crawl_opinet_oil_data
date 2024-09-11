@@ -160,7 +160,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                     test = sigun_names[1].get_attribute('value')
                     if test in sigun_list : 
                         break
-                    elif trycount > 20:
+                    elif trycount > 10:
                         break
                     else:
                         trycount += 1
@@ -186,7 +186,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                     selected_option = Select(sigun).first_selected_option
                     if selected_option.text == sigun_name:
                         break
-                    elif trycount > 20 :
+                    elif trycount > 10 :
                         break
                     else:
                         trycount += 1
