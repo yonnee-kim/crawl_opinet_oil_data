@@ -30,14 +30,15 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: generate .env
-        run: |
-          echo "REPOSITORY_TOKEN=$REPOSITORY_TOKEN" >> .env
-        env:
-          GITHUB_TOKEN: ${{ secrets.REPOSITORY_TOKEN }  # 시크릿 사용
+      # - name: generate .env
+      #   run: |
+      #     echo "REPOSITORY_TOKEN=$REPOSITORY_TOKEN" >> .env
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.REPOSITORY_TOKEN }  # 시크릿 사용
 
       - name: Run crawl_recent_oildata
-
+        env:
+          REPOSITORY_TOKEN: ${{ secrets.REPOSITORY_TOKEN }}  # GITHUB_TOKEN 추가
         run: |
           python crawl_recent_oil_data.py
 
@@ -53,5 +54,7 @@ jobs:
           git add json/ # 필요한 파일 추가
           if [[ $(git diff --cached --stat) ]]; then
             echo "json/ 디렉토리 내 파일 내용 변경사항 있음"
+            git commit -m "Update data files from GitHub Actions" --allow-empty && git push 
+          else
+            echo "No changes to commit"
           fi
-          git commit -m "Update data files from GitHub Actions" --allow-empty && git push || echo "No changes to commit"
