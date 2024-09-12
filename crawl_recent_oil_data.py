@@ -57,12 +57,13 @@ async def get_sigun_code():
                     if try_count <= 0:
                         print('get_sigun_code 실패. 함수 종료.')
                         return
-    # 파일 업데이트
+    # 파일 읽기
     if os.path.exists(file_path):
         with open(file_path, 'r') as file:
             existing_file = file.read()
     else:
         existing_file = ''
+    # 파일 업데이트
     if json.dumps(data, ensure_ascii=False) != existing_file:
         print('시도 시군 코드 변경사항 업데이트 완료.')
         with open(file_path, 'w') as file:
@@ -92,6 +93,8 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
     chrome_options.add_argument("--window-size=1920x1080")  # 창 크기 설정
     chrome_options.add_argument("--no-sandbox")  # 보안 관련 옵션
     chrome_options.add_argument("--disable-dev-shm-usage")  # 리소스 제한 문제 해결
+    chrome_options.add_argument("--disable-popup-blocking")  #  브라우저 팝업 비활성화
+    chrome_options.add_argument("--disable-notifications")  #  브라우저 알림 비활성화
 
     # 시군리스트 초기화
     for sido in sidosigun_code['SIDO']:
@@ -106,7 +109,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
         try:
             start_time = time.time()
             # 특정 요소가 나타날 때까지 최대 10초 대기
-            WebDriverWait(driver, 20).until(
+            WebDriverWait(driver, 40).until(
                 EC.presence_of_element_located((By.XPATH, '//*[@id="SIDO_NM0"]'))
             )
             end_time = time.time()
@@ -120,19 +123,18 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
             print(f"{sido_name} 초기 웹페이지 로드 실패 {elapsed_time:.1f}초:", e)
             driver.quit()  # 새로고침
             time.sleep(2)
-            continue
 
     for sigun_name in sigun_list:
         retry = True
         while retry:
             cut_time = time.time()
-            if  cut_time - code_start_time > 1800 :
+            if  cut_time - code_start_time > 1200 :
                 print(f"{sido_name} {sigun_name} 실행시간 초과, 코드 종료...\n")
                 sys.exit(1)
             try:
                 start_time = time.time()
                 # 특정 요소가 나타날 때까지 최대 10초 대기
-                WebDriverWait(driver, 20).until(
+                WebDriverWait(driver, 40).until(
                     EC.presence_of_element_located((By.XPATH, '//*[@id="SIDO_NM0"]'))
                 )
                 end_time = time.time()
@@ -149,7 +151,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                 driver.get("https://www.opinet.co.kr/searRgSelect.do")
                 continue
             # 시도란 입력
-            sido = WebDriverWait(driver, 60).until(
+            sido = WebDriverWait(driver, 10).until(
                 EC.presence_of_element_located((By.XPATH, '//*[@id="SIDO_NM0"]'))
             )
             Select(sido).select_by_visible_text(sido_name)
@@ -211,16 +213,15 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                 os.remove(excel_file_path)
             # 엑셀 다운로드
             excel_download_button = WebDriverWait(driver, 10).until(
-                EC.presence_of_element_located((By.XPATH, '//*[@id="templ_list0"]/div[7]/div/a'))
+                EC.element_to_be_clickable((By.XPATH, '//*[@id="templ_list0"]/div[7]/div/a'))
             )
             driver.execute_script("arguments[0].click();", excel_download_button)
             trycount = 0
             while not os.listdir(download_dir):
                 trycount += 1
-                print(f"{sido_name} {sigun_name} excel 파일 다운로드 대기중... {trycount}")
                 time.sleep(1)
                 retry = False
-                if trycount > 3 :
+                if trycount >= 10 :
                     print(f"{sido_name} {sigun_name} excel 파일 다운로드 실패.. 다시시작 ")
                     retry = True
                     break
@@ -238,7 +239,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                 if extension == 'xls' or extension == 'xlsx':
                     retry = False
                     break
-                elif trycount > 5 :
+                elif trycount > 10 :
                     trycount += 1
                     print(f'{sido_name} {sigun_name} 파일 확장자명 : {extension}')
                     time.sleep(1)
@@ -287,7 +288,7 @@ def get_opinet_oildata_crawler():
     sido_list = [sido['AREA_NM'] for sido in sidosigun_code['SIDO']]
     print(f'sido list = {sido_list}')
     recent_oil_data_list = []
-    with ThreadPoolExecutor(max_workers=8) as executor:  # 스레드 풀 생성
+    with ThreadPoolExecutor(max_workers=17) as executor:  # 스레드 풀 생성
         future_to_sido = {executor.submit(crawl_for_sido, sido_name, project_dir, sidosigun_code, code_start_time): sido_name for sido_name in sido_list}
         for future in as_completed(future_to_sido):
             sido_name = future_to_sido[future]
