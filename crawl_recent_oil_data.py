@@ -127,12 +127,12 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
         retry = True
         while retry:
             cut_time = time.time()
-            if  cut_time - code_start_time > 1200 :
+            if cut_time - code_start_time > 1200 :
                 print(f"{sido_name} {sigun_name} 실행시간 초과, 코드 종료...\n")
                 sys.exit(1)
             try:
                 start_time = time.time()
-                # 특정 요소가 나타날 때까지 최대 10초 대기
+                # 특정 요소가 나타날 때까지 대기
                 WebDriverWait(driver, 40).until(
                     EC.presence_of_element_located((By.XPATH, '//*[@id="SIDO_NM0"]'))
                 )
@@ -150,7 +150,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                 driver.get("https://www.opinet.co.kr/searRgSelect.do")
                 continue
             # 시도란 입력
-            sido = WebDriverWait(driver, 10).until(
+            sido = WebDriverWait(driver,60).until(
                 EC.presence_of_element_located((By.XPATH, '//*[@id="SIDO_NM0"]'))
             )
             Select(sido).select_by_visible_text(sido_name)
@@ -172,13 +172,12 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
             if trycount > 50:
                 print(f"{sido_name} 시도란 입력실패. 걸린 시간 : {elapsed_time:.1f}초")
                 driver.refresh()
-                time.sleep(1)
+                time.sleep(2)
                 continue
-            # time.sleep(1)
             end_time = time.time()
             elapsed_time = end_time - start_time
             # 시군란 입력       
-            sigun = WebDriverWait(driver, 10).until(
+            sigun = WebDriverWait(driver, 60).until(
                 EC.presence_of_element_located((By.XPATH, '//*[@id="SIGUNGU_NM0"]'))
             )
             Select(sigun).select_by_visible_text(sigun_name) # 시군 네임 입력
@@ -208,7 +207,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                 except:
                     time.sleep(0.5)
             if is_sigun_zero:
-                print(f'시군란 입력 실패')
+                print(f'시군란 입력 실패. 다시 시작')
                 break
             end_time = time.time()
             elapsed_time = end_time - start_time
