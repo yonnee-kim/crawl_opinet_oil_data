@@ -162,19 +162,19 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                     test = sigun_names[1].get_attribute('value')
                     if test in sigun_list :
                         break
-                    elif trycount > 10:
+                    elif trycount > 50:
                         break
                     else:
                         trycount += 1
-                        time.sleep(0.5)
+                        time.sleep(0.1)
                 except Exception as e:
-                    time.sleep(0.5)
-            if trycount > 10:
+                    time.sleep(0.1)
+            if trycount > 50:
                 print(f"{sido_name} 시도란 입력실패. 걸린 시간 : {elapsed_time:.1f}초")
                 driver.refresh()
                 time.sleep(1)
                 continue
-            time.sleep(1)
+            # time.sleep(1)
             end_time = time.time()
             elapsed_time = end_time - start_time
             # 시군란 입력       
@@ -198,12 +198,13 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                         addr_href = addr.get_attribute('href')
                         # URL 디코딩
                         decoded_part = urllib.parse.unquote(addr_href)
-                        if sigun_name in decoded_part:
+                        gun_name = sigun_name.replace('시', '')
+                        if gun_name in decoded_part:
                             retry = False
                             break
-                    if trycount > 10 :
+                    if trycount > 100 :
                         break
-                    time.sleep(0.5)
+                    time.sleep(0.1)
                 except:
                     time.sleep(0.5)
             if is_sigun_zero:
@@ -213,9 +214,12 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
             elapsed_time = end_time - start_time
             if trycount>10:
                 print(f"{sido_name} {sigun_name} 시군란 입력실패. 걸린 시간 : {elapsed_time:.1f}초")
-                driver.refresh()
-                time.sleep(1)
+                driver.quit()
+                time.sleep(2)
+                driver = webdriver.Chrome(options=chrome_options)
+                driver.get("https://www.opinet.co.kr/searRgSelect.do")
                 continue
+            # time.sleep(1)
             # 엑셀 파일 제거
             if os.listdir(download_dir):
                 excel_file_name = os.listdir(download_dir)[0]
@@ -264,11 +268,21 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                 
             # 엑셀 파일을 List로 변환
             excel_file_path = os.path.join(download_dir, excel_file_name)
-            if extension == 'xls' : 
-                data_frame = pd.read_excel(excel_file_path, skiprows=[0, 1], engine='xlrd')
-            else :
-                print(extension)   
-                data_frame = pd.read_excel(excel_file_path, skiprows=[0, 1], engine='openpyxl')
+            while True:
+                try:
+                    if extension == 'xls' : 
+                        data_frame = pd.read_excel(excel_file_path, skiprows=[0, 1], engine='xlrd')
+                        break
+                    else :
+                        print(extension)   
+                        data_frame = pd.read_excel(excel_file_path, skiprows=[0, 1], engine='openpyxl')
+                        break
+                except Exception as e:
+                    print(f"엑셀 파일 읽기 중 오류 발생: {e}")
+                    retry = True
+                    break
+            if retry:
+                continue
             data_frame_list = data_frame.to_dict(orient='records')
             sido_oil_data_list.extend(data_frame_list)
             # 엑셀 파일 제거
