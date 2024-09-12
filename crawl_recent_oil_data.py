@@ -174,7 +174,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                 driver.refresh()
                 time.sleep(1)
                 continue
-            # time.sleep(1)
+            time.sleep(1)
             end_time = time.time()
             elapsed_time = end_time - start_time
             # 시군란 입력       
@@ -219,7 +219,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                 driver = webdriver.Chrome(options=chrome_options)
                 driver.get("https://www.opinet.co.kr/searRgSelect.do")
                 continue
-            # time.sleep(1)
+            time.sleep(1)
             # 엑셀 파일 제거
             if os.listdir(download_dir):
                 excel_file_name = os.listdir(download_dir)[0]
