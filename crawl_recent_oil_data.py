@@ -171,12 +171,12 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                 except Exception as e:
                     time.sleep(0.5)
             if trycount > 10:
+                print(f"{sido_name} 시도란 입력실패. 걸린 시간 : {elapsed_time:.1f}초")
                 driver.refresh()
                 time.sleep(1)
                 continue
             end_time = time.time()
             elapsed_time = end_time - start_time
-            print(f"{sido_name} 시도란 입력완료 걸린 시간 : {elapsed_time:.1f}초")
             # 시군란 입력       
             sigun = WebDriverWait(driver, 10).until(
                 EC.presence_of_element_located((By.XPATH, '//*[@id="SIGUNGU_NM0"]'))
@@ -198,12 +198,12 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                 except:
                     time.sleep(0.5)
             if trycount>10:
+                print(f"{sido_name} 시군란 입력실패. 걸린 시간 : {elapsed_time:.1f}초")
                 driver.refresh()
                 time.sleep(1)
                 continue
             end_time = time.time()
             elapsed_time = end_time - start_time
-            print(f"{sido_name} 시군란 입력완료 걸린 시간 : {elapsed_time:.1f}초")
             # 엑셀 파일 제거
             if os.listdir(download_dir):
                 excel_file_name = os.listdir(download_dir)[0]
