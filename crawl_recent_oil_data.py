@@ -187,9 +187,9 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
             while True:
                 try:
                     trycount += 1
-                    totcnt = driver.find_element(By.XPATH, '//*[@id="totCnt"]')
-                    totcnt_value = totcnt.get_attribute('value')
-                    if totcnt_value == '0':
+                    totcnt = driver.find_element(By.ID, "totCnt")
+                    totcnt_text = totcnt.text
+                    if totcnt_text == '0':
                         is_sigun_zero = True
                         break
                     else:
@@ -198,14 +198,15 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                         # URL 디코딩
                         decoded_part = urllib.parse.unquote(addr_href)
                         gun_name = sigun_name.replace('시', '')
-                        if gun_name in decoded_part:
+                        if gun_name[:2] in decoded_part:
                             retry = False
                             break
                     if trycount > 100 :
                         break
                     time.sleep(0.1)
-                except:
-                    time.sleep(0.5)
+                except Exception as e:
+                    print(e)
+                    time.sleep(0.1)
             if is_sigun_zero:
                 print(f'시군란 입력 실패. 다시 시작')
                 break
