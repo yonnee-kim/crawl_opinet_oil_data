@@ -14,6 +14,7 @@ import time
 import os
 import pandas as pd
 import sys
+import urllib.parse
 
 async def get_sigun_code():
     # getAreaCode
@@ -41,7 +42,6 @@ async def get_sigun_code():
                     if response.status == 200:
                         data = await response.json(content_type='application/vnd.github.v3.raw')  # JSON 응답을 직접 파싱
                         print('get_sigun_code url 연결 성공')
-                        print(data)
                         is_connect = True
                     elif try_count > 0:
                         try_count -= 1
@@ -101,7 +101,6 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
         if sido['AREA_NM'] == sido_name :
             for sigun in sido['SIGUN']:
                 sigun_list.append(sigun['AREA_NM'])
-    print(f'{sido_name} 시군리스트 : {sigun_list}')
 
     while True:
         driver = webdriver.Chrome(options=chrome_options)
@@ -192,11 +191,14 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                     totcnt = driver.find_element(By.XPATH, '//*[@id="totCnt"]')
                     totcnt_value = totcnt.get_attribute('value')
                     if totcnt_value == '0':
+                        is_sigun_zero = True
                         break
                     else:
                         addr = driver.find_element(By.XPATH, '//*[@id="body1"]/tr[1]/td[1]/a')
-                        addr.href = addr.get_attribute('href')
-                        if sigun_name in addr.href:
+                        addr_href = addr.get_attribute('href')
+                        # URL 디코딩
+                        decoded_part = urllib.parse.unquote(addr_href)
+                        if sigun_name in decoded_part:
                             retry = False
                             break
                     if trycount > 10 :
