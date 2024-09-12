@@ -201,6 +201,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                             break
                     if trycount > 10 :
                         break
+                    time.sleep(0.5)
                 except:
                     time.sleep(0.5)
             if is_sigun_zero:
