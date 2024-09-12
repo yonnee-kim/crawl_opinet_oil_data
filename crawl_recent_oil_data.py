@@ -161,7 +161,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                 try:
                     sigun_names = driver.find_elements(By.XPATH, '//*[@id="SIGUNGU_NM0"]/option')
                     test = sigun_names[1].get_attribute('value')
-                    if test in sigun_list : 
+                    if test in sigun_list :
                         break
                     elif trycount > 10:
                         break
@@ -175,6 +175,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                 driver.refresh()
                 time.sleep(1)
                 continue
+            time.sleep(1)
             end_time = time.time()
             elapsed_time = end_time - start_time
             # 시군란 입력       
@@ -184,26 +185,34 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
             Select(sigun).select_by_visible_text(sigun_name) # 시군 네임 입력
             start_time = time.time()
             trycount=0
+            is_sigun_zero = False
             while True:
                 try:
-                    sigun = driver.find_element(By.XPATH, '//*[@id="SIGUNGU_NM0"]')
-                    selected_option = Select(sigun).first_selected_option
-                    if selected_option.text == sigun_name:
-                        break
-                    elif trycount > 10 :
+                    trycount += 1
+                    totcnt = driver.find_element(By.XPATH, '//*[@id="totCnt"]')
+                    totcnt_value = totcnt.get_attribute('value')
+                    if totcnt_value == '0':
                         break
                     else:
-                        trycount += 1
-                        time.sleep(0.5)
+                        addr = driver.find_element(By.XPATH, '//*[@id="body1"]/tr[1]/td[1]/a')
+                        addr.href = addr.get_attribute('href')
+                        if sigun_name in addr.href:
+                            retry = False
+                            break
+                    if trycount > 10 :
+                        break
                 except:
                     time.sleep(0.5)
+            if is_sigun_zero:
+                print(f'시군란 입력 실패')
+                break
+            end_time = time.time()
+            elapsed_time = end_time - start_time
             if trycount>10:
-                print(f"{sido_name} 시군란 입력실패. 걸린 시간 : {elapsed_time:.1f}초")
+                print(f"{sido_name} {sigun_name} 시군란 입력실패. 걸린 시간 : {elapsed_time:.1f}초")
                 driver.refresh()
                 time.sleep(1)
                 continue
-            end_time = time.time()
-            elapsed_time = end_time - start_time
             # 엑셀 파일 제거
             if os.listdir(download_dir):
                 excel_file_name = os.listdir(download_dir)[0]
@@ -268,6 +277,9 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
             print(f'{sido_name} {sigun_name} excel 파일 제거완료')
             driver.refresh()
             time.sleep(1)
+
+        if is_sigun_zero:
+            continue
 
     driver.quit()
     print(f"{sido_name} 크롤링 완료")
