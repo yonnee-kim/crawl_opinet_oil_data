@@ -230,15 +230,20 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                 EC.element_to_be_clickable((By.XPATH, '//*[@id="templ_list0"]/div[7]/div/a'))
             )
             driver.execute_script("arguments[0].click();", excel_download_button)
+            # 엑셀 다운로드 확인
             trycount = 0
-            while not os.listdir(download_dir):
+            while True :
                 trycount += 1
-                time.sleep(1)
-                retry = False
-                if trycount >= 10 :
-                    print(f"{sido_name} {sigun_name} excel 파일 다운로드 실패.. 다시시작 ")
+                if not os.listdir(download_dir) :
+                    extension = os.listdir(download_dir)[0].split('.')[1]
+                    if extension == 'xls' or extension == 'xlsx':
+                        retry = False
+                        break
+                elif trycount > 10 :
+                    print(f"{sido_name} {sigun_name} excel 파일 다운로드 실패.. 다시시작")
                     retry = True
                     break
+                time.sleep(1)
             if retry :
                 driver.quit()
                 time.sleep(2)
@@ -246,25 +251,6 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                 driver.get("https://www.opinet.co.kr/searRgSelect.do")
                 continue
             print(f'{sido_name} {sigun_name} excel 파일 저장 완료. 시도횟수 : {trycount}')
-            trycount = 0
-            while True :
-                excel_file_name = os.listdir(download_dir)[0]
-                extension = excel_file_name.split('.')[1]
-                if extension == 'xls' or extension == 'xlsx':
-                    retry = False
-                    break
-                elif trycount > 10 :
-                    trycount += 1
-                    print(f'{sido_name} {sigun_name} 파일 확장자명 : {extension}')
-                    time.sleep(1)
-                    retry = True
-                    break
-            if retry :
-                driver.quit()
-                time.sleep(2)
-                driver = webdriver.Chrome(options=chrome_options)
-                driver.get("https://www.opinet.co.kr/searRgSelect.do")
-                continue
                 
             # 엑셀 파일을 List로 변환
             excel_file_path = os.path.join(download_dir, excel_file_name)
