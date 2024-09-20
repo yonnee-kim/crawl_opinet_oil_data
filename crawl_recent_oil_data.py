@@ -122,7 +122,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
             print(f"{sido_name} 초기 웹페이지 로드 실패 {elapsed_time:.1f}초:", e)
             driver.quit()  # 새로고침
             time.sleep(2)
-
+    
     for sigun_name in sigun_list:
         retry = True
         while retry:
@@ -234,11 +234,14 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
             trycount = 0
             while True :
                 trycount += 1
-                if not os.listdir(download_dir) :
-                    extension = os.listdir(download_dir)[0].split('.')[1]
-                    if extension == 'xls' or extension == 'xlsx':
-                        retry = False
-                        break
+                file_list = os.listdir(download_dir)  # 리스트를 변수에 저장
+                if file_list:  # 파일이 있는 경우
+                    first_file = file_list[0]
+                    if '.' in first_file:  # 확장자가 있는지 확인
+                        extension = first_file.split('.')[-1]  # 확장자 추출
+                        if extension in ['xls', 'xlsx']:  # 확장자가 xls 또는 xlsx인지 확인
+                            retry = False
+                            break
                 elif trycount > 10 :
                     print(f"{sido_name} {sigun_name} excel 파일 다운로드 실패.. 다시시작")
                     retry = True
