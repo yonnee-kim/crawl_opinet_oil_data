@@ -236,9 +236,9 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                 trycount += 1
                 file_list = os.listdir(download_dir)  # 리스트를 변수에 저장
                 if file_list:  # 파일이 있는 경우
-                    first_file = file_list[0]
-                    if '.' in first_file:  # 확장자가 있는지 확인
-                        extension = first_file.split('.')[-1]  # 확장자 추출
+                    excel_file_name = file_list[0]
+                    if '.' in excel_file_name:  # 확장자가 있는지 확인
+                        extension = excel_file_name.split('.')[-1]  # 확장자 추출
                         if extension in ['xls', 'xlsx']:  # 확장자가 xls 또는 xlsx인지 확인
                             retry = False
                             break
