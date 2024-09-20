@@ -205,7 +205,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                         break
                     time.sleep(0.1)
                 except Exception as e:
-                    print(e)
+                    #print(f'{sido_name} {sigun_name} totCnt : {e}')
                     time.sleep(0.1)
             if is_sigun_zero:
                 print(f'시군란 입력 실패. 다시 시작')
