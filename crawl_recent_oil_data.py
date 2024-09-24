@@ -113,7 +113,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
             )
             end_time = time.time()
             elapsed_time = end_time - start_time
-            print(f"{sido_name} 초기 웹페이지 로드 완료! 걸린 시간 : {elapsed_time:.1f}초")
+            # print(f"{sido_name} 초기 웹페이지 로드 완료! 걸린 시간 : {elapsed_time:.1f}초")
             time.sleep(3)
             break
         except Exception as e:
@@ -138,16 +138,17 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                 )
                 end_time = time.time()
                 elapsed_time = end_time - start_time
-                print(f"{sido_name} 웹페이지 로드 성공 {elapsed_time:.1f}초:")
-                time.sleep(1)
+                # print(f"{sido_name} 웹페이지 로드 성공 {elapsed_time:.1f}초:")
+                time.sleep(2)
             except Exception as e:
                 end_time = time.time()
                 elapsed_time = end_time - start_time
                 print(f"{sido_name} 웹페이지 로드 실패 {elapsed_time:.1f}초:", e)
                 driver.quit()  # 재시작
-                time.sleep(2)
+                time.sleep(1)
                 driver = webdriver.Chrome(options=chrome_options)
                 driver.get("https://www.opinet.co.kr/searRgSelect.do")
+                time.sleep(2)
                 continue
             # 시도란 입력
             sido = WebDriverWait(driver,60).until(
@@ -171,11 +172,13 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                     time.sleep(0.1)
             if trycount > 50:
                 print(f"{sido_name} 시도란 입력실패. 걸린 시간 : {elapsed_time:.1f}초")
-                driver.refresh()
+                driver.quit()
+                time.sleep(1)
+                driver = webdriver.Chrome(options=chrome_options)
+                driver.get("https://www.opinet.co.kr/searRgSelect.do")
                 time.sleep(2)
                 continue
-            end_time = time.time()
-            elapsed_time = end_time - start_time
+            time.sleep(1)
             # 시군란 입력       
             sigun = WebDriverWait(driver, 60).until(
                 EC.presence_of_element_located((By.XPATH, '//*[@id="SIGUNGU_NM0"]'))
@@ -201,23 +204,24 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                         if gun_name[:2] in decoded_part:
                             retry = False
                             break
-                    if trycount > 100 :
+                    if trycount > 200 :
                         break
                     time.sleep(0.1)
                 except Exception as e:
                     #print(f'{sido_name} {sigun_name} totCnt : {e}')
                     time.sleep(0.1)
             if is_sigun_zero:
-                print(f'시군란 입력 실패. 다시 시작')
+                print(f'시군란 목록 0. 다음으로 넘어감.')
                 break
             end_time = time.time()
             elapsed_time = end_time - start_time
-            if trycount>10:
+            if trycount>200:
                 print(f"{sido_name} {sigun_name} 시군란 입력실패. 걸린 시간 : {elapsed_time:.1f}초")
                 driver.quit()
-                time.sleep(2)
+                time.sleep(1)
                 driver = webdriver.Chrome(options=chrome_options)
                 driver.get("https://www.opinet.co.kr/searRgSelect.do")
+                time.sleep(2)
                 continue
             time.sleep(2)
             # 엑셀 파일 제거
@@ -226,7 +230,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                 excel_file_path = os.path.join(download_dir, excel_file_name)
                 os.remove(excel_file_path)
             # 엑셀 다운로드
-            excel_download_button = WebDriverWait(driver, 10).until(
+            excel_download_button = WebDriverWait(driver, 60).until(
                 EC.element_to_be_clickable((By.XPATH, '//*[@id="templ_list0"]/div[7]/div/a'))
             )
             driver.execute_script("arguments[0].click();", excel_download_button)
@@ -249,9 +253,10 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                 time.sleep(1)
             if retry :
                 driver.quit()
-                time.sleep(2)
+                time.sleep(1)
                 driver = webdriver.Chrome(options=chrome_options)
                 driver.get("https://www.opinet.co.kr/searRgSelect.do")
+                time.sleep(2)
                 continue
             print(f'{sido_name} {sigun_name} excel 파일 저장 완료. 시도횟수 : {trycount}')
                 
@@ -271,6 +276,11 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                     retry = True
                     break
             if retry:
+                driver.quit()
+                time.sleep(1)
+                driver = webdriver.Chrome(options=chrome_options)
+                driver.get("https://www.opinet.co.kr/searRgSelect.do")
+                time.sleep(2)
                 continue
             data_frame_list = data_frame.to_dict(orient='records')
             sido_oil_data_list.extend(data_frame_list)
@@ -278,8 +288,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
             os.remove(excel_file_path)
             # 파일이 없거나/삭제될때 까지 대기
             while os.path.exists(excel_file_path):
-                print(f'{sido_name} {sigun_name} excel 파일 제거중')
-                time.sleep(1)
+                time.sleep(0.1)
             print(f'{sido_name} {sigun_name} excel 파일 제거완료')
             driver.refresh()
             time.sleep(1)
