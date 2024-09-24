@@ -159,6 +159,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
             trycount = 0
             while True : 
                 try:
+                    trycount += 1
                     sigun_names = driver.find_elements(By.XPATH, '//*[@id="SIGUNGU_NM0"]/option')
                     test = sigun_names[1].get_attribute('value')
                     if test in sigun_list :
@@ -166,7 +167,6 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                     elif trycount > 50:
                         break
                     else:
-                        trycount += 1
                         time.sleep(0.1)
                 except Exception as e:
                     time.sleep(0.1)
@@ -246,7 +246,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                         if extension in ['xls', 'xlsx']:  # 확장자가 xls 또는 xlsx인지 확인
                             retry = False
                             break
-                elif trycount > 10 :
+                elif trycount > 15 :
                     print(f"{sido_name} {sigun_name} excel 파일 다운로드 실패.. 다시시작")
                     retry = True
                     break
@@ -313,7 +313,7 @@ def get_opinet_oildata_crawler():
     sido_list = [sido['AREA_NM'] for sido in sidosigun_code['SIDO']]
     print(f'sido list = {sido_list}')
     recent_oil_data_list = []
-    with ThreadPoolExecutor(max_workers=8) as executor:  # 스레드 풀 생성
+    with ThreadPoolExecutor(max_workers=4) as executor:  # 스레드 풀 생성
         future_to_sido = {executor.submit(crawl_for_sido, sido_name, project_dir, sidosigun_code, code_start_time): sido_name for sido_name in sido_list}
         for future in as_completed(future_to_sido):
             sido_name = future_to_sido[future]
