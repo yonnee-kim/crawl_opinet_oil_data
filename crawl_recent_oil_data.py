@@ -157,6 +157,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
             Select(sido).select_by_visible_text(sido_name)
             start_time = time.time()
             trycount = 0
+            max_trycount = 50
             while True : 
                 try:
                     trycount += 1
@@ -164,13 +165,15 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                     test = sigun_names[1].get_attribute('value')
                     if test in sigun_list :
                         break
-                    elif trycount > 50:
+                    elif trycount > max_trycount:
                         break
                     else:
                         time.sleep(0.1)
                 except Exception as e:
+                    if trycount > max_trycount :
+                        break
                     time.sleep(0.1)
-            if trycount > 50:
+            if trycount > max_trycount:
                 print(f"{sido_name} 시도란 입력실패. 걸린 시간 : {elapsed_time:.1f}초")
                 driver.quit()
                 time.sleep(1)
@@ -186,6 +189,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
             Select(sigun).select_by_visible_text(sigun_name) # 시군 네임 입력
             start_time = time.time()
             trycount=0
+            max_trycount = 100
             is_sigun_zero = False
             while True:
                 try:
@@ -204,18 +208,19 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                         if gun_name[:2] in decoded_part:
                             retry = False
                             break
-                    if trycount > 200 :
+                    if trycount > max_trycount :
                         break
                     time.sleep(0.1)
                 except Exception as e:
-                    #print(f'{sido_name} {sigun_name} totCnt : {e}')
+                    if trycount > max_trycount :
+                        break
                     time.sleep(0.1)
             if is_sigun_zero:
                 print(f'시군란 목록 0. 다음으로 넘어감.')
                 break
             end_time = time.time()
             elapsed_time = end_time - start_time
-            if trycount>200:
+            if trycount > max_trycount:
                 print(f"{sido_name} {sigun_name} 시군란 입력실패. 걸린 시간 : {elapsed_time:.1f}초")
                 driver.quit()
                 time.sleep(1)
