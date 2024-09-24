@@ -232,6 +232,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
                 excel_file_name = os.listdir(download_dir)[0]
                 excel_file_path = os.path.join(download_dir, excel_file_name)
                 os.remove(excel_file_path)
+            time.sleep(1)
             # 엑셀 다운로드
             excel_download_button = WebDriverWait(driver, 10).until(
                 EC.element_to_be_clickable((By.XPATH, '//*[@id="templ_list0"]/div[7]/div/a'))
@@ -243,7 +244,7 @@ def crawl_for_sido(sido_name, project_dir, sidosigun_code, code_start_time):
             while True :
                 trycount += 1
                 file_list = os.listdir(download_dir)  # 리스트를 변수에 저장
-                excel_file_name = ''
+                extension = ''
                 if file_list:  # 파일이 있는 경우
                     excel_file_name = file_list[0]
                     if '.' in excel_file_name:  # 확장자가 있는지 확인
